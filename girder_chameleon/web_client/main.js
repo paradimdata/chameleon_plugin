@@ -1,6 +1,10 @@
 const { wrap } = girder.utilities.PluginUtils;
 const ItemView = girder.views.body.ItemView;  
 import CreateThumbnailView from './views/CreateThumbnailView.js';
+import  './views/FileListWidget.js';
+import  './views/FlowView.js';
+import  './views/ItemView.js';
+
 
 wrap(ItemView, 'render', function (render) {
     render.apply(this, arguments);
