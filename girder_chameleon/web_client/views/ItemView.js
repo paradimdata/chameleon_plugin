@@ -1,8 +1,8 @@
 import _ from 'underscore';
 
-import FileCollection from 'girder/collections/FileCollection';
-import ItemView from 'girder/views/body/ItemView';
-import { wrap } from 'girder/utilities/PluginUtils';
+const FileCollection = girder.collections.FileCollection;
+const ItemView = girder.views.body.ItemView;
+const { wrap } = girder.utilities.PluginUtils;
 
 import ItemViewTemplate from '../templates/itemView.pug';
 

@@ -1,5 +1,5 @@
-import { wrap } from '@girder/core/utilities/PluginUtils';
-import ItemView from '@girder/core/views/body/ItemView';  
+const { wrap } = girder.utilities.PluginUtils;
+const ItemView = girder.core.views.body.ItemView;  
 import CreateThumbnailView from './views/CreateThumbnailView.js';
 
 wrap(ItemView, 'render', function (render) {

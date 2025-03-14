@@ -1,10 +1,10 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 
-import FileListWidget from 'girder/views/widgets/FileListWidget';
-import router from 'girder/router';
-import { AccessType } from 'girder/constants';
-import { wrap } from 'girder/utilities/PluginUtils';
+const FileListWidget = girder.views.widgets.FileListWidget;
+const router = girder.router;
+const { AccessType } = girder.constants;
+const { wrap } = girder.utilities.PluginUtils;
 
 import FileListWidgetCreateButtonTemplate from '../templates/fileListWidgetCreateButton.pug';
 
