@@ -1,0 +1,13 @@
+LICENSE
+README.md
+setup.py
+chameleon.egg-info/PKG-INFO
+chameleon.egg-info/SOURCES.txt
+chameleon.egg-info/dependency_links.txt
+chameleon.egg-info/entry_points.txt
+chameleon.egg-info/not-zip-safe
+chameleon.egg-info/requires.txt
+chameleon.egg-info/top_level.txt
+girder_chameleon/__init__.py
+girder_chameleon/web_client/dist/girder-plugin-chameleon.umd.cjs
+girder_chameleon/web_client/dist/style.css

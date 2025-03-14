@@ -1,0 +1,16 @@
+import { wrap } from '@girder/core/utilities/PluginUtils';
+import ItemView from '@girder/core/views/body/ItemView';  
+import CreateThumbnailView from './views/CreateThumbnailView.js';
+
+wrap(ItemView, 'render', function (render) {
+    render.apply(this, arguments);
+
+    this.$el.append('<button class="g-open-chameleon">Open Chameleon</button>');
+
+    this.$('.g-open-chameleon').on('click', () => {
+        new CreateThumbnailView({
+            item: this.model,  // Pass the item model
+            file: this.model.file
+        }).render();
+    });
+});

@@ -1,0 +1,43 @@
+.modal-dialog
+  .modal-content
+    form#g-create-thumbnail-form.modal-form(role="form")
+      .modal-header
+        button.close(data-dismiss="modal", aria-hidden="true", type="button") &times;
+        h4.modal-title Converted with Chameleon
+        .g-dialog-subtitle
+          i.icon-doc-inv
+          |  #{file.get('name')}
+      .modal-body
+        label Select an endpoint
+        select#g-endpoint-options.form-control(name="dropdown-options")
+          option(value="option1") RHEED
+          option(value="option2") PPMS/MPMS
+          option(value="option3") Bruker Raw
+          option(value="option4") Bruker Raw Background
+          option(value="option5") 4D STEM
+          option(value="option6") Non-4D STEM(File)
+          option(value="option7") HS2
+          option(value="option8") JEOL SEM
+          option(value="option9") Bruker BRML
+        label Output Name
+        input#g-output-name.form-control(type="text", placeholder="Enter output name here", name="text-input")
+        .g-validation-failed-message
+        label Select an input file extension
+        select#g-input-extension-options.form-control(name="dropdown-options")
+          option(value="option1") None
+          option(value="option2") .raw
+          option(value="option3") .txt
+          option(value="option4") .uxd 
+          option(value="option5") .dm4 
+          option(value="option6") .ser 
+          option(value="option7") .emd
+        label Add file (Bruker Background Only)
+        .g-target-result-container
+          .g-search-field-container
+            input#g-second-file-search.form-control(type="search", placeholder="Search or enter file path", name="secondFile")
+        .g-validation-failed-message
+      .modal-footer
+        a.btn.btn-small.btn-default(data-dismiss="modal") Close
+        button.g-submit-create-chameleon.btn.btn-small.btn-primary(type="submit")
+          i.icon-picture
+          |  Create

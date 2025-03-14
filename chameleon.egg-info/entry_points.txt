@@ -1,0 +1,2 @@
+[girder.plugin]
+chameleon = girder_chameleon:ChameleonPlugin

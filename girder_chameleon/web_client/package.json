@@ -1,0 +1,46 @@
+{
+    "name": "@girder/girder-chameleon",
+    "version": "0.0.1",
+    "description": "Girder plugin adding Chameleon conversion capabilities to Girder.",
+    "homepage": "https://github.com/htmdec/girder-sample-tracker",
+    "bugs": {
+        "url": "https://github.com/htmdec/girder-sample-tracker/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/htmdec/girder-sample-tracker.git"
+    },
+    "type": "module",
+    "files": [
+        "dist",
+        "package.json"
+    ],
+    "main": "./dist/girder-plugin-chameleon.umd.js",
+    "module": "./dist/girder-plugin-chameleon.js",
+    "exports": {
+        ".": {
+            "import": "./dist/girder-plugin-chameleon.js",
+            "require": "./dist/girder-plugin-chameleon.umd.js"
+        },
+        "./package.json": "./package.json",
+        "./styles.css": "./dist/styles.css"
+    },
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite build --watch"
+    },
+    "author": "Peter Cauchy",
+    "license": "BSD-3",
+    "dependencies": {
+        "@girder/core": "*",
+        "bootstrap-tagsinput": "^0.7.1",
+        "qrcode": "^1.4.4"
+    },
+    "devDependencies": {
+        "@rollup/plugin-inject": "^5.0.3",
+        "pug": "^3.0.2",
+        "stylus": "^0.54.8",
+        "vite": "^4.5.9",
+        "vite-plugin-istanbul": "^4.1.0"
+    }
+}
