@@ -20,7 +20,6 @@ import '../stylesheets/createThumbnailView.styl';
  */
 var CreateThumbnailView = View.extend({
     initialize: function () {
-        console.log('Test'); 
     },
     events: {
         'change .g-thumbnail-attach-container input[type="radio"]': function () {
@@ -74,8 +73,8 @@ var CreateThumbnailView = View.extend({
             const folderUrl = `http://localhost:8080/api/v1/folder/${folder}/download`
 
             let finalEndpoint;
-            console.log(folder)
-            console.log(collection)
+            console.log(downloadUrl);
+            console.log(outputFileName);
 
             switch (endpoint) {
                 case 'option1': 
@@ -124,6 +123,7 @@ var CreateThumbnailView = View.extend({
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "access-token": "nschakJJdEsIQUfADFerH6aGjyz706f114C3c8leXhM"
                 },
                 data: JSON.stringify({
                     "input_url": downloadUrl,
