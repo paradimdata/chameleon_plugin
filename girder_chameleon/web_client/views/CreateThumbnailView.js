@@ -1,10 +1,10 @@
 const { SearchFieldWidget } = girder.views.widgets;
 const { FileModel } = girder.models;
 const { View } = girder.views;
-/*
-import '@girder/core/utilities/jquery/girderEnable';
-import '@girder/core/utilities/jquery/girderModal';
-*/
+
+const { girderEnable } = girder.utilities.jquery.girderEnable;
+const { girderModal } = girder.utilities.jquery.girderModal;
+
 import ThumbnailModel from '../models/ThumbnailModel';
 import ChameleonModel from '../models/ChameleonModel';
 
@@ -73,6 +73,7 @@ var CreateThumbnailView = View.extend({
             const folderUrl = `http://localhost:8080/api/v1/folder/${folder}/download`
 
             let finalEndpoint;
+
             console.log(downloadUrl);
             console.log(outputFileName);
 
