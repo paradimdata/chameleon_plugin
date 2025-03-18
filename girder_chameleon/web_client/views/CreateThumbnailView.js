@@ -5,6 +5,7 @@ const { View } = girder.views;
 const { girderEnable } = girder.utilities.jquery.girderEnable;
 const { girderModal } = girder.utilities.jquery.girderModal;
 
+import ThumbnailModel from '../models/ThumbnailModel';
 import ChameleonModel from '../models/ChameleonModel';
 
 import CreateThumbnailViewDialogTemplate from '../templates/createThumbnailViewDialog.pug';

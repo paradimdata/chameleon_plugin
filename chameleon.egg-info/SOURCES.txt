@@ -1,7 +1,6 @@
 .DS_Store
 LICENSE
 README.md
-downloaded_file.txt
 setup.py
 .eggs/README.txt
 .eggs/setuptools_git-1.2-py3.13.egg/EGG-INFO/DESCRIPTION.rst
