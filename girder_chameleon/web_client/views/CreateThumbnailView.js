@@ -1,6 +1,7 @@
 const { SearchFieldWidget } = girder.views.widgets;
 const { FileModel } = girder.models;
 const { View } = girder.views;
+const { getCurrentToken } = girder.auth;
 /*
 import '@girder/core/utilities/jquery/girderEnable';
 import '@girder/core/utilities/jquery/girderModal';
@@ -71,10 +72,9 @@ var CreateThumbnailView = View.extend({
             const folder = chameleonModel.get('folderId');
             const collection = chameleonModel.get('collectionId');
             const folderUrl = `http://localhost:8080/api/v1/folder/${folder}/download`
+            let girderToken = getCurrentToken() || window.localStorage.getItem('girderToken');
 
             let finalEndpoint;
-            console.log(downloadUrl);
-            console.log(outputFileName);
 
             switch (endpoint) {
                 case 'option1': 
@@ -126,6 +126,7 @@ var CreateThumbnailView = View.extend({
                     "access-token": "nschakJJdEsIQUfADFerH6aGjyz706f114C3c8leXhM"
                 },
                 data: JSON.stringify({
+                    "girderToken": girderToken,
                     "input_url": downloadUrl,
                     "output": outputFileName,
                     "output_type": "raw",  
@@ -137,15 +138,15 @@ var CreateThumbnailView = View.extend({
                 processData: false
             }).done(function(response, textStatus, jqXHR) {
                 const contentType = jqXHR.getResponseHeader("Content-Type");
-                
+            
                 if (contentType.includes("application/json")) {
                     // JSON response (could be base64 encoded)
                     const reader = new FileReader();
-                    reader.onload = function() {
+                    reader.onload = function () {
                         try {
                             const jsonResponse = JSON.parse(reader.result);
                             if (jsonResponse.file_data) {
-                                // Handle base64-encoded file
+                                // Decode base64-encoded file data
                                 const byteCharacters = atob(jsonResponse.file_data);
                                 const byteNumbers = new Array(byteCharacters.length);
                                 for (let i = 0; i < byteCharacters.length; i++) {
@@ -154,13 +155,8 @@ var CreateThumbnailView = View.extend({
                                 const byteArray = new Uint8Array(byteNumbers);
                                 const blob = new Blob([byteArray], { type: contentType });
             
-                                // Save file (adjust accordingly)
-                                const link = document.createElement("a");
-                                link.href = URL.createObjectURL(blob);
-                                link.download = jsonResponse.file_name;
-                                document.body.appendChild(link);
-                                link.click();
-                                document.body.removeChild(link);
+                                // Upload file and handle UI updates
+                                uploadFile(blob, jsonResponse.file_name);
                             } else {
                                 console.log("JSON Response:", jsonResponse);
                             }
@@ -172,13 +168,9 @@ var CreateThumbnailView = View.extend({
                 } else {
                     // Raw file response
                     const blob = new Blob([response], { type: contentType });
-                    let mimeType;
             
-                    // Save file (adjust accordingly)
-                    var file = new FileModel();
-                    file.uploadToItem(view.item, blob, outputFileName, mimeType);
-                    $('.modal').girderModal('close');
-                    location.reload();
+                    // Upload file and handle UI updates
+                    uploadFile(blob, outputFileName);
                 }
             }).fail(function(xhr, status, error) {
                 console.error("AJAX Request Failed!");
@@ -186,7 +178,7 @@ var CreateThumbnailView = View.extend({
                 console.error("Error:", error);
                 console.error("Response Text:", xhr.responseText);
                 console.error("HTTP Status Code:", xhr.status);
-                
+            
                 let errorMessage = `
                     <div class="alert alert-danger">
                         <strong>Error:</strong> ${error} <br>
@@ -200,6 +192,15 @@ var CreateThumbnailView = View.extend({
                 $(".g-submit-create-chameleon").girderEnable(true);
             });
             
+            function uploadFile(blob, fileName) {
+                let mimeType;
+                var file = new FileModel();
+                file.uploadToItem(view.item, blob, fileName, mimeType);
+            
+                // Close the modal and reload the page
+                $('.modal').girderModal('close');
+                location.reload();
+            }
             
         }
     },
