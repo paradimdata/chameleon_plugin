@@ -30,7 +30,7 @@ FileListWidget.prototype.events['click a.g-create-thumbnail'] = function (e) {
         parentView: this,
         item: this.parentItem,
         file: this.collection.get(cid)
-    }).once('g:created', function (params) {
+    }).once('submit #g-create-thumbnail-form', function (params) {
         Backbone.history.fragment = null;
         router.navigate(params.attachedToType + '/' + params.attachedToId, {trigger: true});
     }, this).render();

@@ -106,15 +106,18 @@ var CreateThumbnailView = View.extend({
             }
             
             let extraData = {};
-            if (endpoint === 'option4'){
-                extraData = {"background_file_url": secondFileUrl}
-
-            }else if (endpoint === 'option7'){
-                extraData = {"folder_url": folderUrl,
-                    "output_folder": outputFileName
-                }
-
+            switch (input_type) {
+                case 'option2': 
+                    extraData = {"input_ext": ".dm4"};
+                    break; 
+                case 'option3': 
+                    extraData = {"input_ext": ".emd"};
+                    break; 
+                case 'option3': 
+                    extraData = {"input_ext": ".ser"};
+                    break; 
             }
+
             $.ajax({
                 url: finalEndpoint,
                 method: "POST",
@@ -127,7 +130,8 @@ var CreateThumbnailView = View.extend({
                     "input_url": downloadUrl,
                     "output": outputFileName,
                     "output_type": "raw",  
-                    "output_dest": "caller"  
+                    "output_dest": "caller",  
+                    ...extraData
                 }),
                 xhrFields: {
                     responseType: "blob"  
@@ -155,7 +159,7 @@ var CreateThumbnailView = View.extend({
                                 var file = new FileModel();
                                 file.uploadToItem(view.item, blob, jsonResponse.file_name, mimeType);
             
-                                $('.modal').modal('hide');
+                                view.$el.modal('hide');
                                 location.reload();
                             } else {
                                 console.log("JSON Response:", jsonResponse);
@@ -175,7 +179,7 @@ var CreateThumbnailView = View.extend({
                     file.uploadToItem(view.item, blob, outputFileName, mimeType);
             
                     // Close the modal and reload the page
-                    $('.modal').girderModal('close');
+                    view.$el.modal('hide');
                     setTimeout(() => location.reload(), 500);
                 }
             }).fail(function(xhr, status, error) {
