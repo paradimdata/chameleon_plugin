@@ -51,7 +51,6 @@ var CreateThumbnailView = View.extend({
                 target_endpoint: String(this.$('#g-endpoint-options').val()) || '',
                 output_type: String(this.$('#g-output-types').val()) || '',
                 input_type: String(this.$('#g-input-extension-options').val()) || '',
-                ppms_file_type: String(this.$('#g-ppms-file-options').val()) || '',
                 secondFile: this.resultId,
                 fileId: this.file.id,
                 attachToId: this.attachToId,
@@ -62,7 +61,6 @@ var CreateThumbnailView = View.extend({
 
             const outputFileName = chameleonModel.get('output_name') || 'file.png';
             const endpoint = chameleonModel.get('target_endpoint') || "option1";
-            const ppms_file_type = chameleonModel.get('ppms_file_type') || "option1";
             const fileId = chameleonModel.get('fileId')  
             const attachToId = chameleonModel.get('attachToId')
             const secondFileId = chameleonModel.get('secondFile')
@@ -73,7 +71,6 @@ var CreateThumbnailView = View.extend({
             const collection = chameleonModel.get('collectionId');
             const folderUrl = `http://localhost:8080/api/v1/folder/${folder}/download`
             let girderToken = getCurrentToken() || window.localStorage.getItem('girderToken');
-
             let finalEndpoint;
 
             switch (endpoint) {
@@ -146,7 +143,6 @@ var CreateThumbnailView = View.extend({
                         try {
                             const jsonResponse = JSON.parse(reader.result);
                             if (jsonResponse.file_data) {
-                                // Decode base64-encoded file data
                                 const byteCharacters = atob(jsonResponse.file_data);
                                 const byteNumbers = new Array(byteCharacters.length);
                                 for (let i = 0; i < byteCharacters.length; i++) {
@@ -155,8 +151,12 @@ var CreateThumbnailView = View.extend({
                                 const byteArray = new Uint8Array(byteNumbers);
                                 const blob = new Blob([byteArray], { type: contentType });
             
-                                // Upload file and handle UI updates
-                                uploadFile(blob, jsonResponse.file_name);
+                                let mimeType;
+                                var file = new FileModel();
+                                file.uploadToItem(view.item, blob, jsonResponse.file_name, mimeType);
+            
+                                $('.modal').modal('hide');
+                                location.reload();
                             } else {
                                 console.log("JSON Response:", jsonResponse);
                             }
@@ -169,8 +169,14 @@ var CreateThumbnailView = View.extend({
                     // Raw file response
                     const blob = new Blob([response], { type: contentType });
             
-                    // Upload file and handle UI updates
-                    uploadFile(blob, outputFileName);
+                    // Mimic the actions of uploadFile directly here
+                    let mimeType;
+                    var file = new FileModel();
+                    file.uploadToItem(view.item, blob, outputFileName, mimeType);
+            
+                    // Close the modal and reload the page
+                    $('.modal').girderModal('close');
+                    setTimeout(() => location.reload(), 500);
                 }
             }).fail(function(xhr, status, error) {
                 console.error("AJAX Request Failed!");
@@ -191,16 +197,6 @@ var CreateThumbnailView = View.extend({
                 $(".g-validation-failed-message").html(errorMessage);
                 $(".g-submit-create-chameleon").girderEnable(true);
             });
-            
-            function uploadFile(blob, fileName) {
-                let mimeType;
-                var file = new FileModel();
-                file.uploadToItem(view.item, blob, fileName, mimeType);
-            
-                // Close the modal and reload the page
-                $('.modal').girderModal('close');
-                location.reload();
-            }
             
         }
     },
