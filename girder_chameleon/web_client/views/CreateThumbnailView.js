@@ -52,7 +52,6 @@ var CreateThumbnailView = View.extend({
                 output_type: String(this.$('#g-output-types').val()) || '',
                 input_type: String(this.$('#g-input-extension-options').val()) || '',
                 secondFile: this.resultId,
-                fileId: this.file.id,
                 attachToId: this.attachToId,
                 attachToType: this.attachToType,
                 folderId: this.folderId,
@@ -62,15 +61,9 @@ var CreateThumbnailView = View.extend({
             const endpoint = chameleonModel.get('target_endpoint') || "option1";
             const subtitleElement = document.querySelector('.g-dialog-subtitle');
             const fileName = subtitleElement ? subtitleElement.textContent.trim() : '';
-            const fileId = chameleonModel.get('fileId')  
             const attachToId = chameleonModel.get('attachToId')
-            const secondFileId = chameleonModel.get('secondFile')
             const input_type = chameleonModel.get('input_type')
             const downloadUrl = `http://localhost:8080/api/v1/item/${attachToId}/download`;
-            const secondFileUrl = `http://localhost:8080/api/v1/item/${secondFileId}/download`;
-            const folder = chameleonModel.get('folderId');
-            const collection = chameleonModel.get('collectionId');
-            const folderUrl = `http://localhost:8080/api/v1/folder/${folder}/download`
             let outputFileName = chameleonModel.get('output_name') || '';
             let girderToken = getCurrentToken() || window.localStorage.getItem('girderToken');
             let finalEndpoint;
@@ -126,8 +119,6 @@ var CreateThumbnailView = View.extend({
                     extraData = {"input_ext": ".ser"};
                     break; 
             }
-
-            console.log(outputFileName)
 
             $.ajax({
                 url: finalEndpoint,
