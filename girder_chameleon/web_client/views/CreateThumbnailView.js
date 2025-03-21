@@ -44,7 +44,6 @@ var CreateThumbnailView = View.extend({
                 output_name: String(this.$('#g-output-name').val()) || '',                
                 target_endpoint: String(this.$('#g-endpoint-options').val()) || '',
                 output_type: String(this.$('#g-output-types').val()) || '',
-                input_type: String(this.$('#g-input-extension-options').val()) || '',
                 secondFile: this.resultId,
                 attachToId: this.attachToId,
                 attachToType: this.attachToType,
@@ -56,7 +55,6 @@ var CreateThumbnailView = View.extend({
             const subtitleElement = document.querySelector('.g-dialog-subtitle');
             const fileName = subtitleElement ? subtitleElement.textContent.trim() : '';
             const attachToId = chameleonModel.get('attachToId')
-            const input_type = chameleonModel.get('input_type')
             const downloadUrl = `http://localhost:8080/api/v1/item/${attachToId}/download`;
             let outputFileName = chameleonModel.get('output_name') || '';
             let girderToken = getCurrentToken() || window.localStorage.getItem('girderToken');
@@ -97,21 +95,15 @@ var CreateThumbnailView = View.extend({
             }
 
             if (outputFileName == '') {
-                const result = fileName.split(".")[0];
-                outputFileName = result + default_ext
+                const name = fileName.split(".")[0];
+                outputFileName = name + default_ext
             }
             
             let extraData = {};
-            switch (input_type) {
-                case 'option2': 
-                    extraData = {"input_ext": ".dm4"};
-                    break; 
-                case 'option3': 
-                    extraData = {"input_ext": ".emd"};
-                    break; 
-                case 'option3': 
-                    extraData = {"input_ext": ".ser"};
-                    break; 
+            if (endpoint == 'option4'){
+                let extension = fileName.split(".")[1];
+                extension = '.' + extension;
+                extraData = {"input_ext": extension};
             }
 
             $.ajax({
