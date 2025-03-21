@@ -2,11 +2,7 @@ const { SearchFieldWidget } = girder.views.widgets;
 const { FileModel } = girder.models;
 const { View } = girder.views;
 const { getCurrentToken } = girder.auth;
-/*
-import '@girder/core/utilities/jquery/girderEnable';
-import '@girder/core/utilities/jquery/girderModal';
-*/
-import ThumbnailModel from '../models/ThumbnailModel';
+
 import ChameleonModel from '../models/ChameleonModel';
 
 import CreateThumbnailViewDialogTemplate from '../templates/createThumbnailViewDialog.pug';
@@ -14,10 +10,8 @@ import CreateThumbnailViewTargetDescriptionTemplate from '../templates/createThu
 
 import '../stylesheets/createThumbnailView.styl';
 
-/*import FolderModel from 'girder/models/FolderModel'
-
 /**
- * A dialog for creating thumbnails from a specific file.
+ * A dialog for creating a Chameleon conversion for a specific file
  */
 var CreateThumbnailView = View.extend({
     initialize: function () {
@@ -99,7 +93,7 @@ var CreateThumbnailView = View.extend({
                     default_ext = '.txt'
                     break;
                 default:
-                    finalEndpoint = "http://localhost:5020/default"; // Fallback in case none match
+                    finalEndpoint = "http://localhost:5020/default"; 
             }
 
             if (outputFileName == '') {
@@ -143,7 +137,6 @@ var CreateThumbnailView = View.extend({
                 const contentType = jqXHR.getResponseHeader("Content-Type");
             
                 if (contentType.includes("application/json")) {
-                    // JSON response (could be base64 encoded)
                     const reader = new FileReader();
                     reader.onload = function () {
                         try {
@@ -172,15 +165,12 @@ var CreateThumbnailView = View.extend({
                     };
                     response.text().then(text => reader.readAsText(new Blob([text])));
                 } else {
-                    // Raw file response
                     const blob = new Blob([response], { type: contentType });
             
-                    // Mimic the actions of uploadFile directly here
                     let mimeType;
                     var file = new FileModel();
                     file.uploadToItem(view.item, blob, outputFileName, mimeType);
             
-                    // Close the modal and reload the page
                     view.$el.modal('hide');
                     setTimeout(() => location.reload(), 500);
                 }
