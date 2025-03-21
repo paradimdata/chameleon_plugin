@@ -59,8 +59,9 @@ var CreateThumbnailView = View.extend({
                 collectionId: this.collectionId
             });
 
-            const outputFileName = chameleonModel.get('output_name') || 'file.png';
             const endpoint = chameleonModel.get('target_endpoint') || "option1";
+            const subtitleElement = document.querySelector('.g-dialog-subtitle');
+            const fileName = subtitleElement ? subtitleElement.textContent.trim() : '';
             const fileId = chameleonModel.get('fileId')  
             const attachToId = chameleonModel.get('attachToId')
             const secondFileId = chameleonModel.get('secondFile')
@@ -70,39 +71,47 @@ var CreateThumbnailView = View.extend({
             const folder = chameleonModel.get('folderId');
             const collection = chameleonModel.get('collectionId');
             const folderUrl = `http://localhost:8080/api/v1/folder/${folder}/download`
+            let outputFileName = chameleonModel.get('output_name') || '';
             let girderToken = getCurrentToken() || window.localStorage.getItem('girderToken');
             let finalEndpoint;
+            let default_ext;
 
             switch (endpoint) {
                 case 'option1': 
                     finalEndpoint = "http://localhost:5020/rheedconverter";
+                    default_ext = '.png'
                     break; 
                 case 'option2': 
                     finalEndpoint = "http://localhost:5020/ppmsmpms";
+                    default_ext = '.csv'
                     break; 
                 case 'option3': 
                     finalEndpoint = "http://localhost:5020/brukerrawconverter";
+                    default_ext = '.csv'
                     break;
                 case 'option4': 
-                    finalEndpoint = "http://localhost:5020/brukerrawbackground";
+                    finalEndpoint = "http://localhost:5020/non4dstem_file";
+                    default_ext = '.png'
                     break;
                 case 'option5': 
-                    finalEndpoint = "http://localhost:5020/stemarray4d";
+                    finalEndpoint = "http://localhost:5020/hs2converter";
+                    default_ext = '.png'
                     break;
                 case 'option6': 
-                    finalEndpoint = "http://localhost:5020/non4dstem_file";
+                    finalEndpoint = "http://localhost:5020/jeol_sem_converter";
+                    default_ext = '.png'
                     break;
                 case 'option7': 
-                    finalEndpoint = "http://localhost:5020/hs2converter";
-                    break;
-                case 'option8': 
-                    finalEndpoint = "http://localhost:5020/jeol_sem_converter";
-                    break;
-                case 'option9': 
                     finalEndpoint = "http://localhost:5020/brukerbrmlconverter";
+                    default_ext = '.txt'
                     break;
                 default:
                     finalEndpoint = "http://localhost:5020/default"; // Fallback in case none match
+            }
+
+            if (outputFileName == '') {
+                const result = fileName.split(".")[0];
+                outputFileName = result + default_ext
             }
             
             let extraData = {};
@@ -117,6 +126,8 @@ var CreateThumbnailView = View.extend({
                     extraData = {"input_ext": ".ser"};
                     break; 
             }
+
+            console.log(outputFileName)
 
             $.ajax({
                 url: finalEndpoint,
