@@ -1,25 +1,23 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 
-const FileListWidget = girder.views.widgets.FileListWidget;
+const ItemListWidget = girder.views.widgets.ItemListWidget;
 const router = girder.router;
 const { wrap } = girder.utilities.PluginUtils;
 
-import FileListWidgetCreateButtonTemplate from '../templates/fileListWidgetCreateButton.pug';
+import ItemListWidgetCreateButtonTemplate from '../templates/itemListWidgetCreateButton.pug';
 
 import CreateThumbnailView from './CreateThumbnailView';
 
-// Add create thumbnail link to each file in the file list
-wrap(FileListWidget, 'render', function (render) {
+wrap(ItemListWidget, 'render', function (render) {
     render.call(this);
 
-    this.$('.g-file-actions-container').prepend(FileListWidgetCreateButtonTemplate());
+    this.$('.g-item-list-entry').append(ItemListWidgetCreateButtonTemplate());
 
     return this;
 });
 
-// Bind the thumbnail creation button
-FileListWidget.prototype.events['click a.g-create-thumbnail'] = function (e) {
+ItemListWidget.prototype.events['click a.g-create-thumbnail'] = function (e) {
     var cid = $(e.currentTarget).parent().attr('file-cid');
 
     new CreateThumbnailView({

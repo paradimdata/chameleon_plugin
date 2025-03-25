@@ -2,7 +2,6 @@ import os
 from girder.plugin import GirderPlugin, registerPluginStaticContent
 from girder.utility.model_importer import ModelImporter
 
-
 class ChameleonPlugin(GirderPlugin):
     DISPLAY_NAME = "Chameleon"
 

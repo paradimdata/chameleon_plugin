@@ -10,6 +10,9 @@ import CreateThumbnailViewTargetDescriptionTemplate from '../templates/createThu
 
 import '../stylesheets/createThumbnailView.styl';
 
+const CHAMELEON_URL = import.meta.env.VITE_CHAMELEON_API_BASE_URL;
+const GIRDER_URL = import.meta.env.VITE_GIRDER_BASE_URL;
+
 /**
  * A dialog for creating a Chameleon conversion for a specific file
  */
@@ -55,7 +58,7 @@ var CreateThumbnailView = View.extend({
             const subtitleElement = document.querySelector('.g-dialog-subtitle');
             const fileName = subtitleElement ? subtitleElement.textContent.trim() : '';
             const attachToId = chameleonModel.get('attachToId')
-            const downloadUrl = `http://localhost:8080/api/v1/item/${attachToId}/download`;
+            const downloadUrl = GIRDER_URL + `/api/v1/item/${attachToId}/download`;
             let outputFileName = chameleonModel.get('output_name') || '';
             let girderToken = getCurrentToken() || window.localStorage.getItem('girderToken');
             let finalEndpoint;
@@ -63,35 +66,35 @@ var CreateThumbnailView = View.extend({
 
             switch (endpoint) {
                 case 'option1': 
-                    finalEndpoint = "http://localhost:5020/rheedconverter";
+                    finalEndpoint = CHAMELEON_URL + "/rheedconverter";
                     default_ext = '.png'
                     break; 
                 case 'option2': 
-                    finalEndpoint = "http://localhost:5020/ppmsmpms";
+                    finalEndpoint =  CHAMELEON_URL +  "/ppmsmpms";
                     default_ext = '.csv'
                     break; 
                 case 'option3': 
-                    finalEndpoint = "http://localhost:5020/brukerrawconverter";
+                    finalEndpoint =  CHAMELEON_URL + "/brukerrawconverter";
                     default_ext = '.csv'
                     break;
                 case 'option4': 
-                    finalEndpoint = "http://localhost:5020/non4dstem_file";
+                    finalEndpoint =  CHAMELEON_URL + "/non4dstem_file";
                     default_ext = '.png'
                     break;
                 case 'option5': 
-                    finalEndpoint = "http://localhost:5020/hs2converter";
+                    finalEndpoint =  CHAMELEON_URL + "/hs2converter";
                     default_ext = '.png'
                     break;
                 case 'option6': 
-                    finalEndpoint = "http://localhost:5020/jeol_sem_converter";
+                    finalEndpoint =  CHAMELEON_URL + "/jeol_sem_converter";
                     default_ext = '.png'
                     break;
                 case 'option7': 
-                    finalEndpoint = "http://localhost:5020/brukerbrmlconverter";
+                    finalEndpoint =  CHAMELEON_URL + "/brukerbrmlconverter";
                     default_ext = '.txt'
                     break;
                 default:
-                    finalEndpoint = "http://localhost:5020/default"; 
+                    finalEndpoint =  CHAMELEON_URL + "/default"; 
             }
 
             if (outputFileName == '') {

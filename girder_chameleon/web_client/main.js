@@ -4,6 +4,7 @@ import CreateThumbnailView from './views/CreateThumbnailView.js';
 import  './views/FileListWidget.js';
 import  './views/FlowView.js';
 import  './views/ItemView.js';
+import  './views/ItemListWidget.js'
 
 
 wrap(ItemView, 'render', function (render) {
