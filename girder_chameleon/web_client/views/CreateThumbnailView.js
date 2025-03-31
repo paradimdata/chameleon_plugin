@@ -193,6 +193,7 @@ var CreateThumbnailView = View.extend({
     },
 
     initialize: function (settings) {
+        console.log(settings)
         this.item = settings.item;
         this.file = settings.file;
         this.attachToType = 'item';
