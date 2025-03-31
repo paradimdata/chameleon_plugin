@@ -17,7 +17,7 @@ wrap(ItemListWidget, 'render', function (render) {
     this.$('li.g-item-list-entry').each((index, element) => {
         let item = this.collection.at(index);
         if (item) {
-            $(element).append(ItemListWidgetCreateButtonTemplate({ cid: item.cid }));
+            $(element).append(ItemListWidgetCreateButtonTemplate({ item: item }));
         }
     });
 
@@ -28,22 +28,15 @@ wrap(ItemListWidget, 'render', function (render) {
 ItemListWidget.prototype.events['click a.g-create-thumbnail'] = function (event) {
     event.preventDefault();
 
-    let clickedCid = $(event.currentTarget).attr('g-item-cid');
-    let item = this.collection.findWhere({ cid: clickedCid });
-
-    if (!item) {
-        console.error('Item not found for CID:', clickedCid);
-        return;
-    }
-
-    console.log('Clicked Item:', item);
+    let itemId = $(event.currentTarget).attr('data-item-id');
+    let item = this.collection.find((model) => model.id === itemId);
 
     // Create a new `CreateThumbnailView` and pass the necessary arguments
     new CreateThumbnailView({
         el: $('#g-dialog-container'),
         parentView: this,
         item: item,
-        file: item.get('file') // Assuming 'file' is an attribute of the item
+        file: this.collection.get(item.cid)// Assuming 'file' is an attribute of the item
     }).once('submit #g-create-thumbnail-form', function (params) {
         // Once the form is submitted, navigate to the specific route
         Backbone.history.fragment = null;

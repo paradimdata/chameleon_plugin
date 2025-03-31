@@ -193,7 +193,6 @@ var CreateThumbnailView = View.extend({
     },
 
     initialize: function (settings) {
-        console.log(settings)
         this.item = settings.item;
         this.file = settings.file;
         this.attachToType = 'item';
@@ -212,17 +211,29 @@ var CreateThumbnailView = View.extend({
     },
 
     render: function () {
+        console.log("Rendering CreateThumbnailView...");  // Debug log
+    
         this.$el.html(CreateThumbnailViewDialogTemplate({
             file: this.file,
             item: this.item
-        })).girderModal(this).on('shown.bs.modal', () => {
+        }));
+    
+        console.log("Modal content set:", this.$el.html()); // Check if HTML is being inserted
+    
+        this.$el.girderModal(this).on('shown.bs.modal', () => {
+            console.log("Modal shown event triggered");
             this.$('#g-endpoint-options').focus();
         });
-
-        this.$('#g-endpoint-options').focus();
-
+    
+        // Double-check the modal is being opened
+        this.$el.modal('show'); 
+    
+        if (!this.searchWidget) {
+            this.searchWidget = new SearchWidget();
+        }
+    
         this.searchWidget.setElement(this.$('.g-search-field-container')).render();
-
+    
         return this;
     },
 
