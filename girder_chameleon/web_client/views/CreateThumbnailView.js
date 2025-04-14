@@ -45,51 +45,55 @@ var CreateThumbnailView = View.extend({
 
             const chameleonModel = new ChameleonModel({
                 output_name: String(this.$('#g-output-name').val()) || '',                
-                target_endpoint: String(this.$('#g-endpoint-options').val()) || '',
+                /*target_endpoint: String(this.$('#g-endpoint-options').val()) || '',*/
                 output_type: String(this.$('#g-output-types').val()) || '',
                 secondFile: this.resultId,
                 attachToId: this.attachToId,
                 attachToType: this.attachToType,
                 folderId: this.folderId,
-                collectionId: this.collectionId
+                collectionId: this.collectionId,
+                mimeType: this.file.get('mimeType')
             });
 
-            const endpoint = chameleonModel.get('target_endpoint') || "option1";
+            /*const endpoint = chameleonModel.get('target_endpoint') || "option1";*/
             const subtitleElement = document.querySelector('.g-dialog-subtitle');
             const fileName = subtitleElement ? subtitleElement.textContent.trim() : '';
             const attachToId = chameleonModel.get('attachToId')
             const downloadUrl = GIRDER_URL + `/api/v1/item/${attachToId}/download`;
+            const mime_val = chameleonModel.get('mimeType');
             let outputFileName = chameleonModel.get('output_name') || '';
             let girderToken = getCurrentToken() || window.localStorage.getItem('girderToken');
             let finalEndpoint;
             let default_ext;
 
-            switch (endpoint) {
-                case 'option1': 
+            console.log(mime_val)
+
+            switch (mime_val) {
+                case 'application/vnd.paradim.img': 
                     finalEndpoint = CHAMELEON_URL + "/rheedconverter";
                     default_ext = '.png'
                     break; 
-                case 'option2': 
+                case 'application/vnd.paradim.dat': 
                     finalEndpoint =  CHAMELEON_URL +  "/ppmsmpms";
                     default_ext = '.csv'
                     break; 
-                case 'option3': 
+                case 'application/vnd.paradim.raw': 
                     finalEndpoint =  CHAMELEON_URL + "/brukerrawconverter";
                     default_ext = '.csv'
                     break;
-                case 'option4': 
+                case 'application/vnd.paradim.non4d': 
                     finalEndpoint =  CHAMELEON_URL + "/non4dstem_file";
                     default_ext = '.png'
                     break;
-                case 'option5': 
+                case 'application/vnd.paradim.hs2': 
                     finalEndpoint =  CHAMELEON_URL + "/hs2converter";
                     default_ext = '.png'
                     break;
-                case 'option6': 
+                case 'application/vnd.paradim.sem': 
                     finalEndpoint =  CHAMELEON_URL + "/jeol_sem_converter";
                     default_ext = '.png'
                     break;
-                case 'option7': 
+                case 'application/vnd.paradim.brml': 
                     finalEndpoint =  CHAMELEON_URL + "/brukerbrmlconverter";
                     default_ext = '.txt'
                     break;
@@ -103,7 +107,7 @@ var CreateThumbnailView = View.extend({
             }
             
             let extraData = {};
-            if (endpoint == 'option4'){
+            if (mime_val == 'application/vnd.paradim.non4d'){
                 let extension = fileName.split(".")[1];
                 extension = '.' + extension;
                 extraData = {"input_ext": extension};

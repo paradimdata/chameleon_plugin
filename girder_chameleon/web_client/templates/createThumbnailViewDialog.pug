@@ -8,15 +8,6 @@
           i.icon-doc-inv
           |  #{file.get('name')}
       .modal-body
-        label Select an endpoint
-        select#g-endpoint-options.form-control(name="dropdown-options")
-          option(value="option1") RHEED
-          option(value="option2") PPMS/MPMS
-          option(value="option3") Bruker Raw
-          option(value="option4") Non-4D STEM
-          option(value="option5") HS2
-          option(value="option6") JEOL SEM
-          option(value="option7") Bruker BRML
         label Output Name
         input#g-output-name.form-control(type="text", placeholder="Enter output name here", name="text-input")
         .g-validation-failed-message

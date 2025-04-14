@@ -3815,44 +3815,45 @@ var Tr = qs.extend({
       i.preventDefault(), this.$(".g-validation-failed-message").empty(), this.$(".g-submit-create-chameleon").girderEnable(!1);
       const c = new Ds({
         output_name: String(this.$("#g-output-name").val()) || "",
-        target_endpoint: String(this.$("#g-endpoint-options").val()) || "",
+        /*target_endpoint: String(this.$('#g-endpoint-options').val()) || '',*/
         output_type: String(this.$("#g-output-types").val()) || "",
         secondFile: this.resultId,
         attachToId: this.attachToId,
         attachToType: this.attachToType,
         folderId: this.folderId,
-        collectionId: this.collectionId
-      }), s = c.get("target_endpoint") || "option1", d = document.querySelector(".g-dialog-subtitle"), g = d ? d.textContent.trim() : "", w = c.get("attachToId"), D = Us + `/api/v1/item/${w}/download`;
+        collectionId: this.collectionId,
+        mimeType: this.file.get("mimeType")
+      }), s = document.querySelector(".g-dialog-subtitle"), d = s ? s.textContent.trim() : "", g = c.get("attachToId"), w = Us + `/api/v1/item/${g}/download`, D = c.get("mimeType");
       let M = c.get("output_name") || "", $ = Rs() || window.localStorage.getItem("girderToken"), R, Y;
-      switch (s) {
-        case "option1":
+      switch (console.log(D), D) {
+        case "application/vnd.paradim.img":
           R = vt + "/rheedconverter", Y = ".png";
           break;
-        case "option2":
+        case "application/vnd.paradim.dat":
           R = vt + "/ppmsmpms", Y = ".csv";
           break;
-        case "option3":
+        case "application/vnd.paradim.raw":
           R = vt + "/brukerrawconverter", Y = ".csv";
           break;
-        case "option4":
+        case "application/vnd.paradim.non4d":
           R = vt + "/non4dstem_file", Y = ".png";
           break;
-        case "option5":
+        case "application/vnd.paradim.hs2":
           R = vt + "/hs2converter", Y = ".png";
           break;
-        case "option6":
+        case "application/vnd.paradim.sem":
           R = vt + "/jeol_sem_converter", Y = ".png";
           break;
-        case "option7":
+        case "application/vnd.paradim.brml":
           R = vt + "/brukerbrmlconverter", Y = ".txt";
           break;
         default:
           R = vt + "/default";
       }
-      M == "" && (M = g.split(".")[0] + Y);
+      M == "" && (M = d.split(".")[0] + Y);
       let ze = {};
-      if (s == "option4") {
-        let pe = g.split(".")[1];
+      if (D == "application/vnd.paradim.non4d") {
+        let pe = d.split(".")[1];
         pe = "." + pe, ze = { input_ext: pe };
       }
       ot.ajax({
@@ -3864,7 +3865,7 @@ var Tr = qs.extend({
         },
         data: JSON.stringify({
           girderToken: $,
-          input_url: D,
+          input_url: w,
           output: M,
           output_type: "raw",
           output_dest: "caller",
@@ -6423,7 +6424,7 @@ Fo(Oa, "render", function(i) {
 });
 Oa.prototype.events["click a.g-create-thumbnail"] = function(i) {
   var n = ot(i.currentTarget).parent().attr("file-cid");
-  console.log(n), new Tr({
+  new Tr({
     el: ot("#g-dialog-container"),
     parentView: this,
     item: this.parentItem,
@@ -6692,7 +6693,7 @@ Lo($a, "render", function(i) {
 $a.prototype.events["click a.g-create-thumbnail"] = function(i) {
   i.preventDefault();
   let n = ot(i.currentTarget).attr("data-item-id"), c = this.collection.find((s) => s.id === n);
-  console.log(c), console.log(this.collection.get(c.cid)), new Tr({
+  new Tr({
     el: ot("#g-dialog-container"),
     parentView: this,
     item: c,
