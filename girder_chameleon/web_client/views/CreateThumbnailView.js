@@ -66,8 +66,6 @@ var CreateThumbnailView = View.extend({
             let finalEndpoint;
             let default_ext;
 
-            console.log(mime_val)
-
             switch (mime_val) {
                 case 'application/vnd.paradim.img': 
                     finalEndpoint = CHAMELEON_URL + "/rheedconverter";
@@ -276,7 +274,6 @@ var CreateThumbnailView = View.extend({
         let default_ext;
     
         console.log(mime_val)
-        console.log(fileName)
     
         switch (mime_val) {
             case 'application/vnd.paradim.img': 
