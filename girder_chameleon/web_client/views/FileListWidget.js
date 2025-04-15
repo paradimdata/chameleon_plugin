@@ -23,12 +23,10 @@ FileListWidget.prototype.events['click a.g-create-thumbnail'] = function (e) {
     var cid = $(e.currentTarget).parent().attr('file-cid');
 
     new CreateThumbnailView({
-        el: $('#g-dialog-container'),
         parentView: this,
         item: this.parentItem,
         file: this.collection.get(cid)
-    }).once('submit #g-create-thumbnail-form', function (params) {
-        Backbone.history.fragment = null;
-        router.navigate(params.attachedToType + '/' + params.attachedToId, {trigger: true});
-    }, this).render();
+    });
+
+    view.executeChameleonJob();
 };
