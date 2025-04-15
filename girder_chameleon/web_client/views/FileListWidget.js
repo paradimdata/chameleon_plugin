@@ -20,13 +20,17 @@ wrap(FileListWidget, 'render', function (render) {
 
 // Bind the thumbnail creation button
 FileListWidget.prototype.events['click a.g-create-thumbnail'] = function (e) {
-    var cid = $(e.currentTarget).parent().attr('file-cid');
+    e.preventDefault();
 
-    new CreateThumbnailView({
+    const cid = $(e.currentTarget).parent().attr('file-cid');
+    const fileModel = this.collection.get(cid);
+
+    // Directly trigger job without opening modal
+    const view = new CreateThumbnailView({
         parentView: this,
         item: this.parentItem,
-        file: this.collection.get(cid)
+        file: fileModel
     });
 
-    view.executeChameleonJob();
+    view.executeChameleonJob();  // Make sure this method is defined in your view
 };

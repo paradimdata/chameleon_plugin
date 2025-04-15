@@ -266,17 +266,17 @@ var CreateThumbnailView = View.extend({
             mimeType: this.file.get('mimeType')
         });
     
-        const subtitleElement = document.querySelector('.g-dialog-subtitle');
-        const fileName = subtitleElement ? subtitleElement.textContent.trim() : '';
+        const fileName = this.file.get('name');
         const attachToId = chameleonModel.get('attachToId');
         const downloadUrl = GIRDER_URL + `/api/v1/item/${attachToId}/download`;
         const mime_val = chameleonModel.get('mimeType');
-        let outputFileName = chameleonModel.get('output_name') || '';
         let girderToken = getCurrentToken() || window.localStorage.getItem('girderToken');
+        let outputFileName;
         let finalEndpoint;
         let default_ext;
     
         console.log(mime_val)
+        console.log(fileName)
     
         switch (mime_val) {
             case 'application/vnd.paradim.img': 
@@ -311,11 +311,9 @@ var CreateThumbnailView = View.extend({
                 finalEndpoint =  CHAMELEON_URL + "/default"; 
         }
     
-        if (outputFileName == '') {
-            const name = fileName.split(".")[0];
-            outputFileName = name + default_ext
-        }
-        
+        const name = fileName.split(".")[0];
+        outputFileName = name + default_ext
+
         let extraData = {};
         if (mime_val == 'application/vnd.paradim.non4d'){
             let extension = fileName.split(".")[1];
