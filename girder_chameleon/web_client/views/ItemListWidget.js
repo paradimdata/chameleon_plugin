@@ -31,15 +31,13 @@ ItemListWidget.prototype.events['click a.g-create-thumbnail'] = function (event)
     let itemId = $(event.currentTarget).attr('data-item-id');
     let item = this.collection.find((model) => model.id === itemId);
 
-    // Create a new `CreateThumbnailView` and pass the necessary arguments
-    new CreateThumbnailView({
-        el: $('#g-dialog-container'),
+    // Directly create the thumbnail without opening a dialog
+    const view = new CreateThumbnailView({
         parentView: this,
         item: item,
-        file: this.collection.get(item.cid)// Assuming 'file' is an attribute of the item
-    }).once('submit #g-create-thumbnail-form', function (params) {
-        // Once the form is submitted, navigate to the specific route
-        Backbone.history.fragment = null;
-        router.navigate(params.attachedToType + '/' + params.attachedToId, { trigger: true });
-    }, this).render();
+        file: this.collection.get(item.cid)  // Assuming file is associated
+    });
+
+    // Just call the method to execute the job
+    view.executeChameleonJob();  // This should internally upload the file, etc.
 };
