@@ -214,15 +214,11 @@ var CreateThumbnailView = View.extend({
         }, this);
     },
 
-    render: function () {
-        console.log("Rendering CreateThumbnailView...");  // Debug log
-    
+    render: function () { 
         this.$el.html(CreateThumbnailViewDialogTemplate({
             file: this.file,
             item: this.item
         }));
-    
-        console.log("Modal content set:", this.$el.html()); // Check if HTML is being inserted
     
         this.$el.girderModal(this).on('shown.bs.modal', () => {
             console.log("Modal shown event triggered");
