@@ -11,14 +11,24 @@ import ItemListWidgetCreateButtonTemplate from '../templates/itemListWidgetCreat
 
 import CreateThumbnailView from './CreateThumbnailView';
 
+const allowedMimeTypes = ['application/vnd.paradim.img', 'application/vnd.paradim.dat', 'application/vnd.paradim.raw','application/vnd.paradim.non4d','application/vnd.paradim.hs2','application/vnd.paradim.emsa','application/vnd.paradim.brml'];
+
 wrap(ItemListWidget, 'render', function (render) {
     render.call(this);
 
     this.$('li.g-item-list-entry').each((index, element) => {
-        let item = this.collection.at(index);
-        if (item) {
-            $(element).append(ItemListWidgetCreateButtonTemplate({ item: item }));
-        }
+        const item = this.collection.at(index);
+        if (!item) return;
+
+        restRequest({
+            url: `item/${item.id}/files`,
+            method: 'GET'
+        }).done((files) => {
+            const hasMatchingMime = files.some((file) => allowedMimeTypes.includes(file.mimeType));
+            if (hasMatchingMime) {
+                $(element).append(ItemListWidgetCreateButtonTemplate({ item }));
+            }
+        });
     });
 
     return this;
@@ -39,12 +49,14 @@ ItemListWidget.prototype.events['click a.g-create-thumbnail'] = function (event)
         url: `item/${itemId}/files`,
         method: 'GET'
     }).done((files) => {
-        if (!files.length) {
-            console.warn('No files found for item');
+        const matchingFile = files.find((file) => allowedMimeTypes.includes(file.mimeType));
+
+        if (!matchingFile) {
+            console.warn('No matching file found with allowed MIME type');
             return;
         }
 
-        const fileModel = new FileModel(files[0]);
+        const fileModel = new FileModel(matchingFile);
 
         const view = new CreateThumbnailView({
             parentView: this,

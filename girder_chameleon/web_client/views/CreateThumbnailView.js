@@ -132,7 +132,7 @@ var CreateThumbnailView = View.extend({
                 finalEndpoint =  CHAMELEON_URL + "/hs2converter";
                 default_ext = '.png'
                 break;
-            case 'application/vnd.paradim.sem': 
+            case 'application/vnd.paradim.emsa': 
                 finalEndpoint =  CHAMELEON_URL + "/jeol_sem_converter";
                 default_ext = '.png'
                 break;
