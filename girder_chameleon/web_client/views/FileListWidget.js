@@ -10,11 +10,20 @@ import FileListWidgetCreateButtonTemplate from '../templates/fileListWidgetCreat
 
 import CreateThumbnailView from './CreateThumbnailView';
 
+const allowedMimeTypes = ['application/vnd.paradim.img', 'application/vnd.paradim.dat', 'application/vnd.paradim.raw','application/vnd.paradim.non4d','application/vnd.paradim.hs2','application/vnd.paradim.emsa','application/vnd.paradim.brml'];
+
 // Add create thumbnail link to each file in the file list
 wrap(FileListWidget, 'render', function (render) {
     render.call(this);
 
-    this.$('.g-file-actions-container').prepend(FileListWidgetCreateButtonTemplate());
+    this.collection.each((file) => {
+        if (allowedMimeTypes.includes(file.get('mimeType'))) {
+            const $fileActionContainer = this.$(`.g-file-actions-container[file-cid="${file.cid}"]`);
+            if ($fileActionContainer.length) {
+                $fileActionContainer.prepend(FileListWidgetCreateButtonTemplate());
+            }
+        }
+    });
 
     return this;
 });

@@ -11,14 +11,24 @@ import ItemListWidgetCreateButtonTemplate from '../templates/itemListWidgetCreat
 
 import CreateThumbnailView from './CreateThumbnailView';
 
+const allowedMimeTypes = ['application/vnd.paradim.img', 'application/vnd.paradim.dat', 'application/vnd.paradim.raw','application/vnd.paradim.non4d','application/vnd.paradim.hs2','application/vnd.paradim.emsa','application/vnd.paradim.brml'];
+
 wrap(ItemListWidget, 'render', function (render) {
     render.call(this);
 
     this.$('li.g-item-list-entry').each((index, element) => {
-        let item = this.collection.at(index);
-        if (item) {
-            $(element).append(ItemListWidgetCreateButtonTemplate({ item: item }));
-        }
+        const item = this.collection.at(index);
+         if (!item) return;
+ 
+         restRequest({
+             url: `item/${item.id}/files`,
+             method: 'GET'
+         }).done((files) => {
+             const hasMatchingMime = files.some((file) => allowedMimeTypes.includes(file.mimeType));
+             if (hasMatchingMime) {
+                 $(element).append(ItemListWidgetCreateButtonTemplate({ item }));
+             }
+         });
     });
 
     return this;
