@@ -98,9 +98,6 @@ var CreateThumbnailView = View.extend({
         this.$('.g-submit-create-chameleon').girderEnable(false);
     
         const chameleonModel = new ChameleonModel({
-            output_name: String(this.$('#g-output-name').val()) || '',                
-            output_type: String(this.$('#g-output-types').val()) || '',
-            secondFile: this.resultId,
             attachToId: this.attachToId,
             attachToType: this.attachToType,
             folderId: this.folderId,
@@ -116,8 +113,6 @@ var CreateThumbnailView = View.extend({
         let outputFileName;
         let finalEndpoint;
         let default_ext;
-    
-        console.log(mime_val)
     
         switch (mime_val) {
             case 'application/vnd.paradim.img': 
@@ -202,7 +197,6 @@ var CreateThumbnailView = View.extend({
                             var file = new FileModel();
                             file.uploadToItem(view.item, blob, jsonResponse.file_name, mimeType);
     
-                            view.$el.modal('hide');
                             location.reload();
                         } else {
                             console.log("JSON Response:", jsonResponse);
@@ -219,7 +213,6 @@ var CreateThumbnailView = View.extend({
                 var file = new FileModel();
                 file.uploadToItem(view.item, blob, outputFileName, mimeType);
     
-                view.$el.modal('hide');
                 setTimeout(() => location.reload(), 500);
             }
         }).fail(function(xhr, status, error) {

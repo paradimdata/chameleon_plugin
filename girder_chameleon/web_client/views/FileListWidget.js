@@ -26,9 +26,6 @@ FileListWidget.prototype.events['click a.g-create-thumbnail'] = function (e) {
     const cid = $(e.currentTarget).parent().attr('file-cid');
     const fileModel = this.collection.get(cid);
 
-    console.log(cid)
-    console.log(fileModel)
-
     // Directly trigger job without opening modal
     const view = new CreateThumbnailView({
         parentView: this,

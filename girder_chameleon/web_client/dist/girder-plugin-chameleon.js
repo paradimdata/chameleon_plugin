@@ -3838,9 +3838,6 @@ var _r = Ls.extend({
     const i = this;
     this.$(".g-validation-failed-message").empty(), this.$(".g-submit-create-chameleon").girderEnable(!1);
     const r = new Es({
-      output_name: String(this.$("#g-output-name").val()) || "",
-      output_type: String(this.$("#g-output-types").val()) || "",
-      secondFile: this.resultId,
       attachToId: this.attachToId,
       attachToType: this.attachToType,
       folderId: this.folderId,
@@ -3848,7 +3845,7 @@ var _r = Ls.extend({
       mimeType: this.file.get("mimeType")
     }), f = this.file.get("name"), s = r.get("attachToId"), d = qs + `/api/v1/item/${s}/download`, g = r.get("mimeType");
     let F = ks() || window.localStorage.getItem("girderToken"), A, I, P;
-    switch (console.log(g), g) {
+    switch (g) {
       case "application/vnd.paradim.img":
         I = dt + "/rheedconverter", P = ".png";
         break;
@@ -3912,7 +3909,7 @@ var _r = Ls.extend({
               const Nt = new Uint8Array(yt), a = new Blob([Nt], { type: B });
               let je;
               var Oe = new Vi();
-              Oe.uploadToItem(i.item, a, Te.file_name, je), i.$el.modal("hide"), location.reload();
+              Oe.uploadToItem(i.item, a, Te.file_name, je), location.reload();
             } else
               console.log("JSON Response:", Te);
           } catch (Te) {
@@ -3923,7 +3920,7 @@ var _r = Ls.extend({
         const V = new Blob([me], { type: B });
         let Oe;
         var We = new Vi();
-        We.uploadToItem(i.item, V, A, Oe), i.$el.modal("hide"), setTimeout(() => location.reload(), 500);
+        We.uploadToItem(i.item, V, A, Oe), setTimeout(() => location.reload(), 500);
       }
     }).fail(function(me, Ve, G) {
       console.error("AJAX Request Failed!", Ve, G, me.responseText);
@@ -6425,7 +6422,7 @@ mo(Da, "render", function(i) {
 Da.prototype.events["click a.g-create-thumbnail"] = function(i) {
   i.preventDefault();
   const r = _t(i.currentTarget).parent().attr("file-cid"), f = this.collection.get(r);
-  console.log(r), console.log(f), new _r({
+  new _r({
     parentView: this,
     item: this.parentItem,
     file: f
