@@ -13,6 +13,7 @@ import '../stylesheets/createThumbnailView.styl';
 
 const CHAMELEON_URL = import.meta.env.VITE_CHAMELEON_API_BASE_URL;
 const GIRDER_URL = import.meta.env.VITE_GIRDER_BASE_URL;
+const TOKEN_URL = import.meta.env.VITE_CHAMELEON_TOKEN_API_URL;
 
 /**
  * A dialog for creating a Chameleon conversion for a specific file
@@ -110,53 +111,25 @@ var CreateThumbnailView = View.extend({
         const downloadUrl = GIRDER_URL + `/api/v1/item/${attachToId}/download`;
         const mime_val = chameleonModel.get('mimeType');
         let girderToken = getCurrentToken() || window.localStorage.getItem('girderToken');
-        let outputFileName;
-        let finalEndpoint;
-        let default_ext;
-    
-        switch (mime_val) {
-            case 'application/vnd.paradim.img': 
-                finalEndpoint = CHAMELEON_URL + "/rheedconverter";
-                default_ext = '.png'
-                break; 
-            case 'application/vnd.paradim.dat': 
-                finalEndpoint =  CHAMELEON_URL +  "/ppmsmpms";
-                default_ext = '.csv'
-                break; 
-            case 'application/vnd.paradim.raw': 
-                finalEndpoint =  CHAMELEON_URL + "/brukerrawconverter";
-                default_ext = '.csv'
-                break;
-            case 'application/vnd.paradim.non4d': 
-                finalEndpoint =  CHAMELEON_URL + "/non4dstem_file";
-                default_ext = '.png'
-                break;
-            case 'application/vnd.paradim.hs2': 
-                finalEndpoint =  CHAMELEON_URL + "/hs2converter";
-                default_ext = '.png'
-                break;
-            case 'application/vnd.paradim.emsa': 
-                finalEndpoint =  CHAMELEON_URL + "/jeol_sem_converter";
-                default_ext = '.png'
-                break;
-            case 'application/vnd.paradim.brml': 
-                finalEndpoint =  CHAMELEON_URL + "/brukerbrmlconverter";
-                default_ext = '.txt'
-                break;
-            default:
-                finalEndpoint =  CHAMELEON_URL + "/default"; 
-        }
-    
-        const name = fileName.split(".")[0];
-        outputFileName = name + default_ext
+        
+        const endpointMap = new Map([
+            ['application/vnd.paradim.img',       { endpoint: "/rheedconverter",        ext: ".png" }],
+            ['application/vnd.paradim.dat',       { endpoint: "/ppmsmpms",              ext: ".csv" }],
+            ['application/vnd.paradim.raw',       { endpoint: "/brukerrawconverter",    ext: ".csv" }],
+            ['application/vnd.paradim.non4d',     { endpoint: "/non4dstem_file",        ext: ".png" }],
+            ['application/vnd.paradim.hs2',       { endpoint: "/hs2converter",          ext: ".png" }],
+            ['application/vnd.paradim.emsa',      { endpoint: "/jeol_sem_converter",    ext: ".png" }],
+            ['application/vnd.paradim.brml',      { endpoint: "/brukerbrmlconverter",   ext: ".txt" }]
+        ]);
 
-        let extraData = {};
-        if (mime_val == 'application/vnd.paradim.non4d'){
-            let extension = fileName.split(".")[1];
-            extension = '.' + extension;
-            extraData = {"input_ext": extension};
-        }
-    
+        const { endpoint, ext: defaultExt } = endpointMap.get(mimeType) || { endpoint: "/default", ext: "" };
+        const finalEndpoint = CHAMELEON_URL + endpoint;
+        const outputFileName = fileName.split(".")[0] + defaultExt;
+
+        const extraData = (mimeType === 'application/vnd.paradim.non4d') ? {
+            input_ext: '.' + (fileName.split(".")[1] || "")
+        } : {};
+        
         $.ajax({
             url: finalEndpoint,
             method: "POST",
