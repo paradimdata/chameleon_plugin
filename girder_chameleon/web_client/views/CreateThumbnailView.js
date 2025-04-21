@@ -122,11 +122,11 @@ var CreateThumbnailView = View.extend({
             ['application/vnd.paradim.brml',      { endpoint: "/brukerbrmlconverter",   ext: ".txt" }]
         ]);
 
-        const { endpoint, ext: defaultExt } = endpointMap.get(mimeType) || { endpoint: "/default", ext: "" };
+        const { endpoint, ext: defaultExt } = endpointMap.get(mime_val) || { endpoint: "/default", ext: "" };
         const finalEndpoint = CHAMELEON_URL + endpoint;
         const outputFileName = fileName.split(".")[0] + defaultExt;
 
-        const extraData = (mimeType === 'application/vnd.paradim.non4d') ? {
+        const extraData = (mime_val === 'application/vnd.paradim.non4d') ? {
             input_ext: '.' + (fileName.split(".")[1] || "")
         } : {};
         
