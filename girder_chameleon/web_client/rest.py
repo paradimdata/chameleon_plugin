@@ -59,7 +59,7 @@ class ChameleonAuth(Resource):
                 "input_ext": input_ext
             }
 
-        req = Request("POST", url, json=data, headers=headers)
+        req = Request("POST", url, json=data, headers=headers, cert = cert)
         prepared = req.prepare()
         session = Session()
         resp = session.send(prepared, stream=True)
