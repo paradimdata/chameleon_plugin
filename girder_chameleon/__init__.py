@@ -1,6 +1,10 @@
 import os
 from girder.plugin import GirderPlugin, registerPluginStaticContent
 from girder.utility.model_importer import ModelImporter
+from .web_client.rest import ChameleonAuth
+import logging
+
+log = logging.getLogger(__name__)
 
 class ChameleonPlugin(GirderPlugin):
     DISPLAY_NAME = "Chameleon"
@@ -13,3 +17,5 @@ class ChameleonPlugin(GirderPlugin):
             staticDir=os.path.join(os.path.dirname(__file__), "web_client", "dist"),
             tree=info["serverRoot"],
         )
+        log.info("✅ ChameleonPlugin loading")
+        info['apiRoot'].chameleonAuth = ChameleonAuth()

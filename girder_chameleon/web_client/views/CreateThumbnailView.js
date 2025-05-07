@@ -3,6 +3,7 @@ const { SearchFieldWidget } = girder.views.widgets;
 const { FileModel } = girder.models;
 const { View } = girder.views;
 const { getCurrentToken } = girder.auth;
+const { restRequest } = girder.rest;
 
 import ChameleonModel from '../models/ChameleonModel';
 
@@ -126,83 +127,44 @@ var CreateThumbnailView = View.extend({
         const finalEndpoint = CHAMELEON_URL + endpoint;
         const outputFileName = fileName.split(".")[0] + defaultExt;
 
-        const extraData = (mime_val === 'application/vnd.paradim.non4d') ? {
-            input_ext: '.' + (fileName.split(".")[1] || "")
-        } : {};
+        const input_ext = (mime_val === 'application/vnd.paradim.non4d') 
+            ? '.' + (fileName.split(".").pop() || "") 
+            : '';
         
-        $.ajax({
-            url: finalEndpoint,
-            method: "POST",
-            headers: {
+        restRequest({
+            url: 'chameleonAuth',
+            method: 'GET',
+            data: {
+                "chameleon-url": finalEndpoint,
                 "Content-Type": "application/json",
-                "access-token": "nschakJJdEsIQUfADFerH6aGjyz706f114C3c8leXhM"
-            },
-            data: JSON.stringify({
                 "girderToken": girderToken,
                 "input_url": downloadUrl,
                 "output": outputFileName,
-                "output_type": "raw",  
-                "output_dest": "caller",  
-                ...extraData
-            }),
-            xhrFields: {
-                responseType: "blob"  
+                "input_ext" : input_ext
             },
-            processData: false
-        }).done(function(response, textStatus, jqXHR) {
-            const contentType = jqXHR.getResponseHeader("Content-Type");
-    
-            if (contentType.includes("application/json")) {
-                const reader = new FileReader();
-                reader.onload = function () {
-                    try {
-                        const jsonResponse = JSON.parse(reader.result);
-                        if (jsonResponse.file_data) {
-                            const byteCharacters = atob(jsonResponse.file_data);
-                            const byteNumbers = new Array(byteCharacters.length);
-                            for (let i = 0; i < byteCharacters.length; i++) {
-                                byteNumbers[i] = byteCharacters.charCodeAt(i);
-                            }
-                            const byteArray = new Uint8Array(byteNumbers);
-                            const blob = new Blob([byteArray], { type: contentType });
-    
-                            let mimeType;
-                            var file = new FileModel();
-                            file.uploadToItem(view.item, blob, jsonResponse.file_name, mimeType);
-    
-                            location.reload();
-                        } else {
-                            console.log("JSON Response:", jsonResponse);
-                        }
-                    } catch (error) {
-                        console.error("Error parsing JSON response:", error);
-                    }
-                };
-                response.text().then(text => reader.readAsText(new Blob([text])));
-            } else {
-                const blob = new Blob([response], { type: contentType });
-    
-                let mimeType;
-                var file = new FileModel();
-                file.uploadToItem(view.item, blob, outputFileName, mimeType);
-    
-                setTimeout(() => location.reload(), 500);
+        }).then(response => {
+            console.log('Response received:', response);
+        
+            // Assuming response has { file_data, content_type, file_name }
+            const byteCharacters = atob(response.file_data);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
             }
-        }).fail(function(xhr, status, error) {
-            console.error("AJAX Request Failed!", status, error, xhr.responseText);
-    
-            let errorMessage = `
-                <div class="alert alert-danger">
-                    <strong>Error:</strong> ${error} <br>
-                    <strong>Status:</strong> ${status} <br>
-                    <strong>HTTP Code:</strong> ${xhr.status} <br>
-                    <strong>Response:</strong> ${xhr.responseText || "No response from server"} <br>
-                    <strong>Possible Causes:</strong> Check if the API endpoint is correct, server is running, and request data is valid.
-                </div>`;
-    
-            $(".g-validation-failed-message").html(errorMessage);
-            $(".g-submit-create-chameleon").girderEnable(true);
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: response.content_type });
+        
+            let mimeType = response.content_type;
+            var file = new FileModel();
+        
+            file.uploadToItem(view.item, blob, response.file_name, mimeType)
+            setTimeout(() => location.reload(), 50);
+        
+        })
+        .catch(error => {
+            console.error('REST request error:', error);
         });
+        
     }
 });
 
