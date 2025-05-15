@@ -1,0 +1,48 @@
+.g-config-breadcrumb-container
+
+// Gear button with styled container and button
+.g-config-gear-button-container
+  button.g-config-gear-button(type="button", title="Settings")
+    i.icon-cog(aria-hidden="true")
+    |  Settings
+
+.g-chameleon-config-description
+  p.
+    Configure the Chameleon plugin settings below. These settings control
+    how this instance communicates with the Chameleon API and authenticates
+    requests using provided credentials.
+
+form.g-chameleon-config-form(role="form")
+  .form-group
+    label.control-label(for="g-chameleon-base-api-url") Base API URL
+    input.input-sm.form-control#g-chameleon-base-api-url(
+      type="text",
+      placeholder="https://api.chameleoncloud.org")
+
+  .form-group
+    label.control-label(for="g-chameleon-auth-header-name") API Auth Header Name
+    input.input-sm.form-control#g-chameleon-auth-header-name(
+      type="text",
+      placeholder="e.g., X-Auth-Token")
+
+  .form-group
+    label.control-label(for="g-chameleon-auth-secret") API Auth Secret
+    input.input-sm.form-control#g-chameleon-auth-secret(
+      type="text",
+      placeholder="Secret string or token")
+
+  .form-group
+    label.control-label(for="g-chameleon-client-certificate") Client Certificate (PEM)
+    input.input-sm.form-control#g-chameleon-client-certificate(
+      type="text",
+      placeholder="/path/to/client.crt")
+
+  .form-group
+    label.control-label(for="g-chameleon-client-key") Client Key (PEM)
+    input.input-sm.form-control#g-chameleon-client-key(
+      type="text",
+      placeholder="/path/to/client.key")
+
+  p.g-validation-failed-message.g-config-error-message
+
+  input.btn.btn-sm.btn-primary(type="submit", value="Save Settings")

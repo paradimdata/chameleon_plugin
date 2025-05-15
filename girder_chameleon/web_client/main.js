@@ -1,11 +1,16 @@
 const { wrap } = girder.utilities.PluginUtils;
-const ItemView = girder.views.body.ItemView;  
-import CreateThumbnailView from './views/CreateThumbnailView.js';
-import  './views/FileListWidget.js';
-import  './views/FlowView.js';
-import  './views/ItemView.js';
-import  './views/ItemListWidget.js'
+const ItemView = girder.views.body.ItemView;
 
+// Load the config route
+import './routes';
+
+// Extend other views
+import './views/FileListWidget';
+import './views/FlowView';
+import './views/ItemView';
+import './views/ItemListWidget';
+
+import CreateThumbnailView from './views/CreateThumbnailView';
 
 wrap(ItemView, 'render', function (render) {
     render.apply(this, arguments);
@@ -14,7 +19,7 @@ wrap(ItemView, 'render', function (render) {
 
     this.$('.g-open-chameleon').on('click', () => {
         new CreateThumbnailView({
-            item: this.model,  // Pass the item model
+            item: this.model,
             file: this.model.file
         }).render();
     });

@@ -1,5 +1,4 @@
 import { resolve } from 'path';
-
 import { defineConfig } from 'vite';
 import istanbul from 'vite-plugin-istanbul';
 import { compileClient } from 'pug';
@@ -11,7 +10,7 @@ function pugPlugin() {
     transform(src: string, id: string) {
       if (id.endsWith('.pug')) {
         return {
-          code: `${compileClient(src, {filename: id})}\nexport default template`,
+          code: `${compileClient(src, { filename: id })}\nexport default template`,
           map: null,
         };
       }
@@ -19,31 +18,42 @@ function pugPlugin() {
   };
 }
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     inject({
-      $: "jquery",
-      jQuery: "jquery",
-      "window.jQuery": "jquery"
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery'
     }),
     pugPlugin(),
     istanbul({
       include: 'src/*',
       exclude: ['node_modules', 'test/'],
-      extension: [ '.js', '.ts', '.vue' ],
-      // requireEnv: true,
+      extension: ['.js', '.ts', '.vue'],
     }),
   ],
   optimizeDeps: {
-     include: ["jquery"],
+    include: ['jquery'],
   },
   build: {
     sourcemap: true,
+    outDir: 'dist',
+    emptyOutDir: true,
     lib: {
       entry: resolve(__dirname, 'main.js'),
       name: 'GirderPluginChameleon',
-      fileName: 'girder-plugin-chameleon',
+      fileName: (format) =>
+        format === 'umd' ? 'girder-plugin-chameleon.umd.cjs' : 'girder-plugin-chameleon',
+      formats: ['es', 'umd'],
     },
-  },
+    rollupOptions: {
+      output: {
+        globals: {
+          '@girder/core': 'girder.core'
+        }
+      },
+      external: ['@girder/core']
+    }
+  }
 });
+
