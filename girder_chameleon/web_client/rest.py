@@ -26,7 +26,8 @@ class ChameleonAuth(Resource):
             else: # one file version
                cert = PluginSettings.API_AUTH_CLIENT_CERTIFICATE
 
-        url = params.get('chameleon-url')
+        #url = params.get('chameleon-url')
+        url = PluginSettings.BASE_API_URL
         content_type = params.get('Content-Type')
         girder_token = params.get('girderToken')
         input_url = params.get('input_url')

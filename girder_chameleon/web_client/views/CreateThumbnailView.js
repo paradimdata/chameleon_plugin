@@ -135,7 +135,7 @@ var CreateThumbnailView = View.extend({
             url: 'chameleonAuth',
             method: 'GET',
             data: {
-                "chameleon-url": finalEndpoint,
+                //"chameleon-url": finalEndpoint,
                 "Content-Type": "application/json",
                 "girderToken": girderToken,
                 "input_url": downloadUrl,
