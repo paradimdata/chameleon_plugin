@@ -31,18 +31,6 @@ def _defaultOtherSettings():
     return ''
 
 
-@setting_utilities.validator(PluginSettings.BASE_API_URL)
-def _validateProvidersEnabled(doc):
-    if not isinstance(doc['value'], (list, tuple)):
-        raise ValidationException('The enabled providers must be a list.', 'value')
-
-
-@setting_utilities.validator(PluginSettings.BASE_API_URL)
-def _validateIgnoreRegistrationPolicy(doc):
-    if not isinstance(doc['value'], bool):
-        raise ValidationException('Ignore registration policy setting must be boolean.', 'value')
-
-
 @setting_utilities.validator({
     PluginSettings.BASE_API_URL,
     PluginSettings.API_AUTH_HEADER_NAME,
