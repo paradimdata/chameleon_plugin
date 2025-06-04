@@ -3,7 +3,7 @@ import _ from 'underscore';
 
 const PluginConfigBreadcrumbWidget = girder.views.widgets.PluginConfigBreadcrumbWidget;
 const View = girder.views.View;
-const { getApiRoot, restRequest } = girder.rest;;
+const { getApiRoot, restRequest } = girder.rest;
 const events = girder.events;
 
 import ConfigViewTemplate from '../templates/configView.pug';
@@ -14,7 +14,7 @@ var ConfigView = View.extend({
         'submit .g-chameleon-config-form': function (event) {
             event.preventDefault();
             this.$('.g-config-error-message').empty();
-
+    
             const settings = [{
                 key: 'chameleon.base_api_url',
                 value: this.$('#g-chameleon-base-api-url').val().trim()
@@ -30,8 +30,8 @@ var ConfigView = View.extend({
             }, {
                 key: 'chameleon.api_auth_client_key',
                 value: this.$('#g-chameleon-client-key').val().trim()
-            }].filter(setting => setting.value !== '');
-
+            }];
+    
             this._saveSettings(settings);
         }
     },
@@ -54,20 +54,28 @@ var ConfigView = View.extend({
         }).done((resp) => {
             this.settingVals = resp;
             this.render();
+
+            // Populate form fields after rendering
+            this.$('#g-chameleon-base-api-url').val(resp['chameleon.base_api_url'] || '');
+            this.$('#g-chameleon-auth-header-name').val(resp['chameleon.api_auth_header_name'] || '');
+            this.$('#g-chameleon-auth-secret').val(resp['chameleon.api_auth_secret'] || '');
+            this.$('#g-chameleon-client-certificate').val(resp['chameleon.api_auth_client_certificate'] || '');
+            this.$('#g-chameleon-client-key').val(resp['chameleon.api_auth_client_key'] || '');
         });
     },
 
     render: function () {
+        // Optionally keep origin/apiRoot if your template uses them
         const origin = window.location.protocol + '//' + window.location.host;
         let _apiRoot = getApiRoot();
         if (_apiRoot.charAt(0) !== '/') {
             _apiRoot = '/' + _apiRoot;
         }
 
+        // Remove settings context; let JS populate fields after render
         this.$el.html(ConfigViewTemplate({
             origin,
-            apiRoot: _apiRoot,
-            settings: this.settingVals || {}
+            apiRoot: _apiRoot
         }));
 
         if (!this.breadcrumb) {

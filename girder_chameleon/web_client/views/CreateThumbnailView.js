@@ -1,4 +1,3 @@
-
 const { SearchFieldWidget } = girder.views.widgets;
 const { FileModel } = girder.models;
 const { View } = girder.views;
@@ -12,9 +11,7 @@ import CreateThumbnailViewTargetDescriptionTemplate from '../templates/createThu
 
 import '../stylesheets/createThumbnailView.styl';
 
-const CHAMELEON_URL = import.meta.env.VITE_CHAMELEON_API_BASE_URL;
-const GIRDER_URL = import.meta.env.VITE_GIRDER_BASE_URL;
-const TOKEN_URL = import.meta.env.VITE_CHAMELEON_TOKEN_API_URL;
+const GIRDER_URL = window.location.origin;
 
 /**
  * A dialog for creating a Chameleon conversion for a specific file
@@ -124,7 +121,6 @@ var CreateThumbnailView = View.extend({
         ]);
 
         const { endpoint, ext: defaultExt } = endpointMap.get(mime_val) || { endpoint: "/default", ext: "" };
-        const finalEndpoint = CHAMELEON_URL + endpoint;
         const outputFileName = fileName.split(".")[0] + defaultExt;
 
         const input_ext = (mime_val === 'application/vnd.paradim.non4d') 
@@ -135,7 +131,6 @@ var CreateThumbnailView = View.extend({
             url: 'chameleonAuth',
             method: 'GET',
             data: {
-                //"chameleon-url": finalEndpoint,
                 "Content-Type": "application/json",
                 "girderToken": girderToken,
                 "input_url": downloadUrl,
