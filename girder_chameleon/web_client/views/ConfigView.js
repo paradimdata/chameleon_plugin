@@ -30,7 +30,7 @@ var ConfigView = View.extend({
             }, {
                 key: 'chameleon.api_auth_client_key',
                 value: this.$('#g-chameleon-client-key').val().trim()
-            }];
+            }].filter(setting => setting.value !== '');
 
             this._saveSettings(settings);
         }

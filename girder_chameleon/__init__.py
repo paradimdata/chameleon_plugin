@@ -1,7 +1,7 @@
 import os
 from girder.plugin import GirderPlugin, registerPluginStaticContent
 from girder.utility.model_importer import ModelImporter
-from .web_client.rest import ChameleonAuth
+from .rest import ChameleonAuth
 import logging
 
 log = logging.getLogger(__name__)
