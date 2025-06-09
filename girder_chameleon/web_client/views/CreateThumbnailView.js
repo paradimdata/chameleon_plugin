@@ -126,7 +126,10 @@ var CreateThumbnailView = View.extend({
         const input_ext = (mime_val === 'application/vnd.paradim.non4d') 
             ? '.' + (fileName.split(".").pop() || "") 
             : '';
-        
+    
+        console.log(endpoint)
+        console.log(mime_val)
+
         restRequest({
             url: 'chameleonAuth',
             method: 'GET',
@@ -135,6 +138,7 @@ var CreateThumbnailView = View.extend({
                 "girderToken": girderToken,
                 "input_url": downloadUrl,
                 "output": outputFileName,
+                "endpoint": endpoint,
                 "input_ext" : input_ext
             },
         }).then(response => {
@@ -153,7 +157,7 @@ var CreateThumbnailView = View.extend({
             var file = new FileModel();
         
             file.uploadToItem(view.item, blob, response.file_name, mimeType)
-            setTimeout(() => location.reload(), 50);
+            //setTimeout(() => location.reload(), 50);
         
         })
         .catch(error => {

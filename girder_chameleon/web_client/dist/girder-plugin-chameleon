@@ -6394,7 +6394,7 @@ function _o(i) {
   }
   return n;
 }
-const { SearchFieldWidget: xo } = girder.views.widgets, { FileModel: Co } = girder.models, { View: To } = girder.views, { getCurrentToken: Eo } = girder.auth, { restRequest: So } = girder.rest, Do = "http://localhost:8080";
+const { SearchFieldWidget: xo } = girder.views.widgets, { FileModel: Co } = girder.models, { View: To } = girder.views, { getCurrentToken: Eo } = girder.auth, { restRequest: So } = girder.rest, Do = window.location.origin;
 var sr = To.extend({
   initialize: function() {
   },
@@ -6446,15 +6446,15 @@ var sr = To.extend({
       ["application/vnd.paradim.emsa", { endpoint: "/jeol_sem_converter", ext: ".png" }],
       ["application/vnd.paradim.brml", { endpoint: "/brukerbrmlconverter", ext: ".txt" }]
     ]), { endpoint: O, ext: $ } = D.get(g) || { endpoint: "/default", ext: "" }, R = o.split(".")[0] + $, ie = g === "application/vnd.paradim.non4d" ? "." + (o.split(".").pop() || "") : "";
-    So({
+    console.log(O), console.log(g), So({
       url: "chameleonAuth",
       method: "GET",
       data: {
-        //"chameleon-url": finalEndpoint,
         "Content-Type": "application/json",
         girderToken: w,
         input_url: d,
         output: R,
+        endpoint: O,
         input_ext: ie
       }
     }).then((_e) => {
@@ -6465,7 +6465,7 @@ var sr = To.extend({
       const J = new Uint8Array(B), Le = new Blob([J], { type: _e.content_type });
       let W = _e.content_type;
       var Ke = new Co();
-      Ke.uploadToItem(i.item, Le, _e.file_name, W), setTimeout(() => location.reload(), 50);
+      Ke.uploadToItem(i.item, Le, _e.file_name, W);
     }).catch((_e) => {
       console.error("REST request error:", _e);
     });

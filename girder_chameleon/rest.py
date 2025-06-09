@@ -42,9 +42,9 @@ class ChameleonAuth(Resource):
         output = params.get('output')
         output_type = "raw"
         output_dest = "caller"
+        endpoint = params.get('endpoint')
         input_ext = params.get('input_ext')
-        
-        full_url = base_url + input_ext
+        full_url = base_url + endpoint
 
         if token:
             headers = {'Content-Type': content_type} | token
@@ -67,9 +67,10 @@ class ChameleonAuth(Resource):
                 "output": output,
                 "output_type": output_type,
                 "output_dest": output_dest,
-                "input_ext": input_ext
             }
-
+        print('##TEST##')
+        print(full_url)
+        print('##TEST##')
         req = Request("POST", full_url, json=data, headers=headers)
         prepared = req.prepare()
         session = Session()
