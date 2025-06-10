@@ -11,7 +11,8 @@ import CreateThumbnailViewTargetDescriptionTemplate from '../templates/createThu
 
 import '../stylesheets/createThumbnailView.styl';
 
-const GIRDER_URL = window.location.origin;
+//const GIRDER_URL = window.location.origin;
+const GIRDER_URL = 'http://host.docker.internal:8080'
 
 /**
  * A dialog for creating a Chameleon conversion for a specific file
@@ -129,6 +130,8 @@ var CreateThumbnailView = View.extend({
     
         console.log(endpoint)
         console.log(mime_val)
+        console.log(GIRDER_URL)
+        console.log(downloadUrl)
 
         restRequest({
             url: 'chameleonAuth',
@@ -157,7 +160,7 @@ var CreateThumbnailView = View.extend({
             var file = new FileModel();
         
             file.uploadToItem(view.item, blob, response.file_name, mimeType)
-            //setTimeout(() => location.reload(), 50);
+            setTimeout(() => location.reload(), 50);
         
         })
         .catch(error => {
