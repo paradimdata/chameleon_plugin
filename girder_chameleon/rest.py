@@ -45,9 +45,10 @@ class ChameleonAuth(Resource):
         input_ext = params.get('input_ext')
         full_url = base_url + endpoint
 
-        headers = {'Content-Type': content_type}
         if token:
-            headers.update(token)
+            headers = {'Content-Type': content_type} | token
+        else:
+            headers = {'Content-Type': content_type}
 
         data = {
             "girderToken": girder_token,

@@ -12,8 +12,8 @@ import CreateThumbnailViewTargetDescriptionTemplate from '../templates/createThu
 
 import '../stylesheets/createThumbnailView.styl';
 
-//const GIRDER_URL = window.location.origin;
-const GIRDER_URL = 'http://host.docker.internal:8080'
+const GIRDER_URL = window.location.origin;
+//const GIRDER_URL = 'http://host.docker.internal:8080'
 
 /**
  * A dialog for creating a Chameleon conversion for a specific file
@@ -108,7 +108,7 @@ var CreateThumbnailView = View.extend({
     
         const fileName = this.file.get('name');
         const attachToId = chameleonModel.get('attachToId');
-        const downloadUrl = GIRDER_URL + `//api/v1/item/${attachToId}/download`;
+        const downloadUrl = GIRDER_URL + `/api/v1/item/${attachToId}/download`;
         const mime_val = chameleonModel.get('mimeType');
         let girderToken = getCurrentToken() || window.localStorage.getItem('girderToken');
         
@@ -129,11 +129,6 @@ var CreateThumbnailView = View.extend({
             ? '.' + (fileName.split(".").pop() || "") 
             : '';
     
-        console.log(endpoint)
-        console.log(mime_val)
-        console.log(GIRDER_URL)
-        console.log(downloadUrl)
-
         restRequest({
             url: 'chameleonAuth',
             method: 'GET',
@@ -161,11 +156,11 @@ var CreateThumbnailView = View.extend({
             var file = new FileModel();
         
             file.uploadToItem(view.item, blob, response.file_name, mimeType)
-            //setTimeout(() => location.reload(), 50);
+            setTimeout(() => location.reload(), 50);
         
         })
         .catch(err => {
-            console.log(err.status)
+            
             events.trigger('g:alert', {
                 icon: 'cancel',
                 text: err.responseJSON.message,
