@@ -3,6 +3,7 @@ const { FileModel } = girder.models;
 const { View } = girder.views;
 const { getCurrentToken } = girder.auth;
 const { restRequest } = girder.rest;
+const events = girder.events;
 
 import ChameleonModel from '../models/ChameleonModel';
 
@@ -107,7 +108,7 @@ var CreateThumbnailView = View.extend({
     
         const fileName = this.file.get('name');
         const attachToId = chameleonModel.get('attachToId');
-        const downloadUrl = GIRDER_URL + `/api/v1/item/${attachToId}/download`;
+        const downloadUrl = GIRDER_URL + `//api/v1/item/${attachToId}/download`;
         const mime_val = chameleonModel.get('mimeType');
         let girderToken = getCurrentToken() || window.localStorage.getItem('girderToken');
         
@@ -160,11 +161,18 @@ var CreateThumbnailView = View.extend({
             var file = new FileModel();
         
             file.uploadToItem(view.item, blob, response.file_name, mimeType)
-            setTimeout(() => location.reload(), 50);
+            //setTimeout(() => location.reload(), 50);
         
         })
-        .catch(error => {
-            console.error('REST request error:', error);
+        .catch(err => {
+            console.log(err.status)
+            events.trigger('g:alert', {
+                icon: 'cancel',
+                text: err.responseJSON.message,
+                type: 'danger'
+              });
+            
+            
         });
         
     }
