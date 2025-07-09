@@ -130,7 +130,7 @@ var CreateThumbnailView = View.extend({
             : '';
     
         restRequest({
-            url: 'chameleonAuth',
+            url: 'chameleon',
             method: 'GET',
             data: {
                 "Content-Type": "application/json",

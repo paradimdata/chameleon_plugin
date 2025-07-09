@@ -6,14 +6,14 @@ from .settings import PluginSettings
 from requests import Request, Session
 import base64
 
-class ChameleonAuth(Resource):
+class Chameleon(Resource):
     def __init__(self):
         super().__init__()
-        self.resourceName = 'chameleonAuth'
-        self.route('GET', (), self.getAuthMethod)
+        self.resourceName = 'chameleon'
+        self.route('GET', (), self.getChameleonMethod)
 
     @access.public
-    def getAuthMethod(self, params, **kwargs):
+    def getChameleonMethod(self, params, **kwargs):
         token = {}
         cert = None
 

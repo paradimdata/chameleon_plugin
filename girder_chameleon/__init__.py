@@ -1,7 +1,7 @@
 import os
 from girder.plugin import GirderPlugin, registerPluginStaticContent
 from girder.utility.model_importer import ModelImporter
-from .rest import ChameleonAuth
+from .rest import Chameleon
 import logging
 
 log = logging.getLogger(__name__)
@@ -18,4 +18,4 @@ class ChameleonPlugin(GirderPlugin):
             tree=info["serverRoot"],
         )
         log.info("✅ ChameleonPlugin loading")
-        info['apiRoot'].chameleonAuth = ChameleonAuth()
+        info['apiRoot'].chameleon = Chameleon()
