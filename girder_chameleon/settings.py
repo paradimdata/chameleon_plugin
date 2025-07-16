@@ -3,17 +3,17 @@ from girder.utility import setting_utilities
 
 class PluginSettings:
     BASE_API_URL = "chameleon.base_api_url"
-    API_AUTH_HEADER_NAME = "chameleon.api_header_name"
-    API_AUTH_SECRET = "chameleon.api_secret"
-    API_AUTH_CLIENT_CERTIFICATE = "chameleon.api_client_certificate"
-    API_AUTH_CLIENT_KEY = "chameleon.api_client_key"
+    API_HEADER_NAME = "chameleon.api_header_name"
+    API_SECRET = "chameleon.api_secret"
+    API_CLIENT_CERTIFICATE = "chameleon.api_client_certificate"
+    API_CLIENT_KEY = "chameleon.api_client_key"
 
 @setting_utilities.default({
     PluginSettings.BASE_API_URL,
-    PluginSettings.API_AUTH_HEADER_NAME,
-    PluginSettings.API_AUTH_SECRET,
-    PluginSettings.API_AUTH_CLIENT_CERTIFICATE,
-    PluginSettings.API_AUTH_CLIENT_KEY
+    PluginSettings.API_HEADER_NAME,
+    PluginSettings.API_SECRET,
+    PluginSettings.API_CLIENT_CERTIFICATE,
+    PluginSettings.API_CLIENT_KEY
 })
 def _defaultChameleonParams():
     return ""
@@ -21,10 +21,10 @@ def _defaultChameleonParams():
 # TODO: Add sensible validation of each configuration parameter type
 @setting_utilities.validator({
     PluginSettings.BASE_API_URL,
-    PluginSettings.API_AUTH_HEADER_NAME,
-    PluginSettings.API_AUTH_SECRET,
-    PluginSettings.API_AUTH_CLIENT_CERTIFICATE,
-    PluginSettings.API_AUTH_CLIENT_KEY,
+    PluginSettings.API_HEADER_NAME,
+    PluginSettings.API_SECRET,
+    PluginSettings.API_CLIENT_CERTIFICATE,
+    PluginSettings.API_CLIENT_KEY,
 })
 def _validateOtherSettings(doc):
     pass
