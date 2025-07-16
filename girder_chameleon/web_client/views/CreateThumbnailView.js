@@ -153,10 +153,16 @@ var CreateThumbnailView = View.extend({
             const blob = new Blob([byteArray], { type: response.content_type });
         
             let mimeType = response.content_type;
-            var file = new FileModel();
-        
-            file.uploadToItem(view.item, blob, response.file_name, mimeType)
-            setTimeout(() => location.reload(), 50);
+           
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = response.file_name;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Optional: revoke object URL to free memory
+            setTimeout(() => URL.revokeObjectURL(link.href), 100);
         
         })
         .catch(err => {
