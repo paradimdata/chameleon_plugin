@@ -18,21 +18,21 @@ class Chameleon(Resource):
         cert = None
 
         # Get current plugin settings
-        API_AUTH_HEADER_NAME = Setting().get(PluginSettings.API_AUTH_HEADER_NAME)
-        API_AUTH_SECRET = Setting().get(PluginSettings.API_AUTH_SECRET)
-        API_AUTH_CLIENT_CERTIFICATE = Setting().get(PluginSettings.API_AUTH_CLIENT_CERTIFICATE)
-        API_AUTH_CLIENT_KEY = Setting().get(PluginSettings.API_AUTH_CLIENT_KEY)
+        API_HEADER_NAME = Setting().get(PluginSettings.API_HEADER_NAME)
+        API_SECRET = Setting().get(PluginSettings.API_SECRET)
+        API_CLIENT_CERTIFICATE = Setting().get(PluginSettings.API_CLIENT_CERTIFICATE)
+        API_CLIENT_KEY = Setting().get(PluginSettings.API_CLIENT_KEY)
 
         # Auth token header, if configured
-        if len(API_AUTH_HEADER_NAME) > 0 and len(API_AUTH_SECRET) > 0:
-            token[API_AUTH_HEADER_NAME] = API_AUTH_SECRET
+        if len(API_HEADER_NAME) > 0 and len(API_SECRET) > 0:
+            token[API_HEADER_NAME] = API_SECRET
 
         # SSL client authentication private key & cert, if configured
-        if len(API_AUTH_CLIENT_CERTIFICATE) > 0:
-            if len(API_AUTH_CLIENT_KEY) > 0:
-                cert = (API_AUTH_CLIENT_CERTIFICATE, API_AUTH_CLIENT_KEY)
+        if len(API_CLIENT_CERTIFICATE) > 0:
+            if len(API_CLIENT_KEY) > 0:
+                cert = (API_CLIENT_CERTIFICATE, API_CLIENT_KEY)
             else:
-                cert = API_AUTH_CLIENT_CERTIFICATE
+                cert = API_CLIENT_CERTIFICATE
 
         base_url = Setting().get(PluginSettings.BASE_API_URL)
         content_type = params.get('Content-Type')

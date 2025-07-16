@@ -3,10 +3,10 @@ from girder.utility import setting_utilities
 
 class PluginSettings:
     BASE_API_URL = "chameleon.base_api_url"
-    API_AUTH_HEADER_NAME = "chameleon.api_auth_header_name"
-    API_AUTH_SECRET = "chameleon.api_auth_secret"
-    API_AUTH_CLIENT_CERTIFICATE = "chameleon.api_auth_client_certificate"
-    API_AUTH_CLIENT_KEY = "chameleon.api_auth_client_key"
+    API_AUTH_HEADER_NAME = "chameleon.api_header_name"
+    API_AUTH_SECRET = "chameleon.api_secret"
+    API_AUTH_CLIENT_CERTIFICATE = "chameleon.api_client_certificate"
+    API_AUTH_CLIENT_KEY = "chameleon.api_client_key"
 
 @setting_utilities.default({
     PluginSettings.BASE_API_URL,
