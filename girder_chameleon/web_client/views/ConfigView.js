@@ -39,10 +39,10 @@ var ConfigView = View.extend({
     initialize: function () {
         this.settingKeys = [
             'chameleon.base_api_url',
-            'chameleon.api_auth_header_name',
-            'chameleon.api_auth_secret',
-            'chameleon.api_auth_client_certificate',
-            'chameleon.api_auth_client_key'
+            'chameleon.api_header_name',
+            'chameleon.api_secret',
+            'chameleon.api_client_certificate',
+            'chameleon.api_client_key'
         ];
 
         restRequest({
@@ -57,10 +57,10 @@ var ConfigView = View.extend({
 
             // Populate form fields after rendering
             this.$('#g-chameleon-base-api-url').val(resp['chameleon.base_api_url'] || '');
-            this.$('#g-chameleon-auth-header-name').val(resp['chameleon.api_auth_header_name'] || '');
-            this.$('#g-chameleon-auth-secret').val(resp['chameleon.api_auth_secret'] || '');
-            this.$('#g-chameleon-client-certificate').val(resp['chameleon.api_auth_client_certificate'] || '');
-            this.$('#g-chameleon-client-key').val(resp['chameleon.api_auth_client_key'] || '');
+            this.$('#g-chameleon-header-name').val(resp['chameleon.api_header_name'] || '');
+            this.$('#g-chameleon-secret').val(resp['chameleon.api_secret'] || '');
+            this.$('#g-chameleon-client-certificate').val(resp['chameleon.api_client_certificate'] || '');
+            this.$('#g-chameleon-client-key').val(resp['chameleon.api_client_key'] || '');
         });
     },
 
