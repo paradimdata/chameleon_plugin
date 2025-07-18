@@ -17,5 +17,5 @@ class ChameleonPlugin(GirderPlugin):
             staticDir=os.path.join(os.path.dirname(__file__), "web_client", "dist"),
             tree=info["serverRoot"],
         )
-        log.info("ChameleonPlugin-loading")
+        log.info("Chameleon-plugin-loading")
         info['apiRoot'].chameleon = Chameleon()
