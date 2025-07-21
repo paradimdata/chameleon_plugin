@@ -19,16 +19,16 @@ var ConfigView = View.extend({
                 key: 'chameleon.base_api_url',
                 value: this.$('#g-chameleon-base-api-url').val().trim()
             }, {
-                key: 'chameleon.api_auth_header_name',
-                value: this.$('#g-chameleon-auth-header-name').val().trim()
+                key: 'chameleon.api_header_name',
+                value: this.$('#g-chameleon-header-name').val().trim()
             }, {
-                key: 'chameleon.api_auth_secret',
-                value: this.$('#g-chameleon-auth-secret').val().trim()
+                key: 'chameleon.api_secret',
+                value: this.$('#g-chameleon-secret').val().trim()
             }, {
-                key: 'chameleon.api_auth_client_certificate',
+                key: 'chameleon.api_client_certificate',
                 value: this.$('#g-chameleon-client-certificate').val().trim()
             }, {
-                key: 'chameleon.api_auth_client_key',
+                key: 'chameleon.api_client_key',
                 value: this.$('#g-chameleon-client-key').val().trim()
             }];
     
