@@ -16,19 +16,19 @@ var ConfigView = View.extend({
             this.$('.g-config-error-message').empty();
     
             const settings = [{
-                key: 'chameleon.base_api_url',
+                key: 'chameleon.base-api-url',
                 value: this.$('#g-chameleon-base-api-url').val().trim()
             }, {
-                key: 'chameleon.api_header_name',
+                key: 'chameleon.api-header-name',
                 value: this.$('#g-chameleon-header-name').val().trim()
             }, {
-                key: 'chameleon.api_secret',
+                key: 'chameleon.api-secret',
                 value: this.$('#g-chameleon-secret').val().trim()
             }, {
-                key: 'chameleon.api_client_certificate',
+                key: 'chameleon.api-client-certificate',
                 value: this.$('#g-chameleon-client-certificate').val().trim()
             }, {
-                key: 'chameleon.api_client_key',
+                key: 'chameleon.api-client-key',
                 value: this.$('#g-chameleon-client-key').val().trim()
             }];
     
