@@ -19,3 +19,4 @@ class ChameleonPlugin(GirderPlugin):
         )
         log.info("Chameleon-plugin-loading")
         info['apiRoot'].chameleon = Chameleon()
+        log.info("\n")
