@@ -11,10 +11,12 @@ import '../stylesheets/configView.styl';
 
 var ConfigView = View.extend({
     events: {
-        'submit .g-chameleon-config-form': function (event) {
+        // Event block for when new plugin settings are submitted. Plugin settings include the url of the base Chameleon API endpoint that will be hit, the header and secret for the API (if applicable, and the client certificate and key (if applicable)
+        'submit .g-chameleon-config-form': function (event) { 
             event.preventDefault();
             this.$('.g-config-error-message').empty();
 
+            //Each setting has a key and a value
             const settings = [{
                 key: 'chameleon.base_api_url',
                 value: this.$('#g-chameleon-base-api-url').val().trim()
@@ -32,10 +34,11 @@ var ConfigView = View.extend({
                 value: this.$('#g-chameleon-client-key').val().trim()
             }];
 
-            this._saveSettings(settings);
+            this._saveSettings(settings); 
         }
     },
 
+    // Initialize the setting keys
     initialize: function () {
         this.settingKeys = [
             'chameleon.base_api_url',
@@ -44,7 +47,7 @@ var ConfigView = View.extend({
             'chameleon.api_client_certificate',
             'chameleon.api_client_key'
         ];
-
+        //Call the system settings to find values
         restRequest({
             method: 'GET',
             url: 'system/setting',
@@ -88,8 +91,11 @@ var ConfigView = View.extend({
 
         return this;
     },
-
+    
+    //Method for saving settings values
     _saveSettings: function (settings) {
+
+        //Add to settings with a PUT
         restRequest({
             method: 'PUT',
             url: 'system/setting',
