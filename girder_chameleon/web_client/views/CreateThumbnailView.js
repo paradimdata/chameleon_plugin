@@ -12,8 +12,8 @@ import CreateThumbnailViewTargetDescriptionTemplate from '../templates/createThu
 
 import '../stylesheets/createThumbnailView.styl';
 
-//const GIRDER_URL = window.location.origin;
-const GIRDER_URL = 'http://host.docker.internal:8080'
+const GIRDER_URL = window.location.origin;
+//const GIRDER_URL = 'http://host.docker.internal:8080'
 
 /**
  * A dialog for creating a Chameleon conversion for a specific file

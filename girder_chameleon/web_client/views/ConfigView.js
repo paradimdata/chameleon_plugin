@@ -14,24 +14,24 @@ var ConfigView = View.extend({
         'submit .g-chameleon-config-form': function (event) {
             event.preventDefault();
             this.$('.g-config-error-message').empty();
-    
+
             const settings = [{
-                key: 'chameleon.base-api-url',
+                key: 'chameleon.base_api_url',
                 value: this.$('#g-chameleon-base-api-url').val().trim()
             }, {
-                key: 'chameleon.api-header-name',
+                key: 'chameleon.api_header_name',
                 value: this.$('#g-chameleon-header-name').val().trim()
             }, {
-                key: 'chameleon.api-secret',
+                key: 'chameleon.api_secret',
                 value: this.$('#g-chameleon-secret').val().trim()
             }, {
-                key: 'chameleon.api-client-certificate',
+                key: 'chameleon.api_client_certificate',
                 value: this.$('#g-chameleon-client-certificate').val().trim()
             }, {
-                key: 'chameleon.api-client-key',
+                key: 'chameleon.api_client_key',
                 value: this.$('#g-chameleon-client-key').val().trim()
             }];
-    
+
             this._saveSettings(settings);
         }
     },
